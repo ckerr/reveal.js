@@ -2,8 +2,8 @@
 
 Changes to make for Covalence:
 
+- [x] update sloccount
 - [ ] discuss build_tools
-- [ ] update sloccount
 - [ ] update time
 - [ ] swap gyp -> gn with a new palette cleanser
 - [ ] chromium benchmark?

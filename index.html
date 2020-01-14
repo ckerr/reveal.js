@@ -45,19 +45,13 @@
           #### A gentle introduction to becoming productive in a very large codebase
 
           XXX
-          Hi, I'm Charles Kerr. I haven't presented before, so a few sentences about me: I've worked for about a year on Electron for GitHub.
+          Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft.
 
           Before that I worked for about five years on Ubuntu Linux,
 
           and before that I wrote most of the BitTorrent app named Transmission.
 
           So I've done open source for awhile now.
-
-          And I came to Electron because I wanted to keep doing it,
-
-          and because Electron is a Good Thing for getting more desktop apps on Mac and Linux,
-
-          and because the calendar said 2017 and it was way past time for me to learn web tech.
         </section>
 
         <section id="intent">
@@ -67,18 +61,25 @@
           <p>&nbsp;</p>
           <p class="fragment" style=font-size:smaller">1. The Tools <i>(getting the code)</i></p>
           <p class="fragment" style=font-size:smaller">2. The Code <i>(building & understanding the code)</i></p>
-          <p class="fragment" style=font-size:smaller">3. Putting it into Practice <i>(fixing the code)</i></p>
+          <p class="fragment" style=font-size:smaller">3. Putting it into Practice <i>(changing the code)</i></p>
           <aside class="notes">
-          <p>The Electron team's got a neat dynamic: we're a small team, but even
-             then we're spread out among a lot of companies, like GitHub, Slack,
-             Microsoft, and Atlassian. And this not how corporate teams usually work
-             but it works for us and the PRs come in every day.</p>
+          <p>In a lot of ways we're a traditional open source project:
+             we've got a CoC, governance structure, small team from a
+             frustrating number of timezones, etc.</p>
 
-          <p>But we don't get as many PRs from the community as you'd expect for an
-             open source tool whose primary users are developers.</p>
+          <p>But <em>unlike</em> a lot of open source projects, at least the
+             ones I've worked on, nearly all maintainers are from companies
+             that rely on Electron commercially, and nearly all the patches
+             come from them.</p>
 
-          <p>I think Electron's got a reputation that its internals are <i>too</i> big and <i>too</i> scary.
-             This presentation is to push back on that a little and encourage you to dive in.
+          <p>So why don't we see more volunteers? Electron is MIT licensed,
+             with no CLA, so it's not the license. And the number of apps
+             using Electron is amazing, so it's not a lack of interested
+             parties, so it's not a lack of interested parties.</p>
+
+          <p>I think what's going on is Electron's got a reputation that its
+             code is <em>too</em> big and <em>too</em> scary. This presentation
+             is to push back on that a little and encourage you to dive in.
              I'll do this in three parts:</p>
 
           <p><b>fragment</b> The tools. Building Electron takes a few tools you've used and a few weird ones you haven't, unless you're paid write web browsers.</p>
@@ -115,9 +116,9 @@
 
           These are documented at electronjs.org/docs and I'm going to skip past them because most developers have already used or heard of these and so ... they're not scary.
 
-          For example if you're attending an Electron meetup, you've probably installed Node
+          For example if you're attending an Electron conference, you've probably installed Node
 
-          And if you're attending an Electron meetup and have a Mac, and you've probably installed something using homebrew.
+          And if you're attending an Electron conference and have a Mac, and you've probably installed something using homebrew.
 
           So moving right along...
         </section>
@@ -159,12 +160,12 @@
           ### So that's a lot of code?
 
           ```sh
-          ~/electron/electron-gn/src$ sloccount *
-          cpp:         20,007,861 (56.57%)
-          ansic:        5,624,929 (15.90%)
-          javascript:   4,638,763 (13.11%)
-          python:       1,720,845  (4.87%)
-          Total Physical Source Lines of Code (SLOC)                = 35,370,460
+          ~/electron/electron-gn/master/src$ sloccount *
+          cpp:         24,667,543 (53.89%)
+          javascript:   7,155,364 (15.63%)
+          ansic:        5,596,140 (12.23%)
+          python:       2,081,835 (4.55%)
+          Total Physical Source Lines of Code (SLOC)  = 45,773,083
           ```
 
           **Yes.**
