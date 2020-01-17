@@ -6,7 +6,7 @@
 
     <title>Electron Hacking for Beginners</title>
 
-    <meta name="description" content="A gentle introduction to finding your way in a very large codebase">
+    <meta name="description" content="A gentle introduction to a very large codebase">
     <meta name="author" content="Charles Kerr">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -125,7 +125,7 @@
           <ol>
             <li class="fragment">Scratch an itch</li>
             <li class="fragment">More first-class desktop apps everywhere</li>
-            <li class="fragment">Maybe find a more interersting job?</li>
+            <li class="fragment">Maybe find a more interesting job?</li>
             <li class="fragment">Use existing skills and learn new ones</li>
           </ol>
 
@@ -156,7 +156,7 @@
             <p><b>fragment</b>
               Nobody ever talks about this, but this is my favorite one.
               Electron uses JavaScript, C++, Objective C, Typescript, Python.
-              It uses Windows native API, Mac native API, GTK+, dbus, posix,
+              It uses Windows native API, Mac native API, GTK+, dbus, POSIX,
               IPC, Chai, and the list goes on.
               If you know any of those, that's enough to get a foothold
               into the code.
@@ -176,6 +176,8 @@
         </section>
 
         <section data-markdown data-separator-notes="XXX" id="os-specific-prerequisites">
+          FIXME: this topic is too minor to be its own slide. Merge with build-tools intro.
+
           ### OS-specific prerequisites
 
           Instructions at [electronjs.org/docs/](https://electronjs.org/docs/development/build-instructions-gn)
@@ -204,24 +206,25 @@
           <p class="fragment">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
           <p class="fragment">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
           <aside class="notes">
-          What gets built?
+            <p>What gets built?</p>
 
-          Well, Electron <em>is</em> Node plus Chromium plus features.
+            <p>Well, Electron <em>is</em> Node plus Chromium plus features.</p>
 
-          We build it all together to ensure everything's compatible.
-          For example,
-          everything needs to have the same compiler flags.
-          We need to ensure that Chromium and Node use the same version of V8.
+            <p>We build it all together to ensure everything's compatible.
+               For example,
+               everything needs to have the same compiler flags.
+               We need to ensure that Chromium and Node use the same version of V8.</p>
 
-          *fragment*
-          Oh yeah, v8. Node has some dependencies, and we need to build those too.
+            <p><b>fragment</b>
+            Oh yeah, v8. Node has some dependencies, and we need to build those too.</p>
 
-          *fragment*
-          And so does Chromium
+            <p><b>fragment</b>
+            And so does Chromium</p>
 
-          *fragment*
-          Oh, and Chromium's dependencies have dependencies.
-          If you ever type `npm install`, you might be feeling some deja vu here.
+            <p><b>fragment</b>
+            Oh, and Chromium's dependencies have dependencies.
+            If you ever type `npm install`, you might be feeling some deja vu here.
+            </p>
           </aside>
         </section>
 
@@ -499,7 +502,7 @@
             </p>
 
             <p>
-            And if you've wrtten even Hello World in Electron,
+            And if you've written even Hello World in Electron,
             the separation of concerns between browser and renderer
             will already look familiar. This is where that separation
             in Electron comes from.
@@ -547,7 +550,7 @@
           <aside class="notes">
             <p>When you look at Electron's code,
               you'll see the same ideas in play.</p>
-            <p>On the left here you'll see the javascript and typescript modules.
+            <p>On the left here you'll see the JavaScript and typescript modules.
                This is the user-facing code that Electron applications import or require.</p>
             <p>On the right is the C++ layer that goes between lib and Chromium's content module.
                This is where we subclass from content's public APIs,
@@ -560,7 +563,8 @@
         </section>
 
         <section id="finding-reference-points">
-          <p>So if you need context on <span class="filename">electron/shell/browser/atom_browser_client</span>:
+          <p>So if you get a crash in <span class="filename">electron/shell/browser/atom_browser_client</span>:</p>
+          <p>
             <ul>
               <li>You know a reference impl is at <span class="filename">content/shell/browser/shell_content_browser_client.cc</span></li>
               <li>You know the parent class is at <span class="filename">content/public/browser/content_browser_client.h</span></li>
