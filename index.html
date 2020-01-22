@@ -22,12 +22,22 @@
         font-style: italic;
         filter: brightness(66%);
       }
+      .reveal section .why_image {
+        background-color: transparent;
+        border: none;
+        height: 200px;
+        width: 150px;
+      }
       .filename {
         font: courier;
         font-size: 0.8em;
         color: lime;
         background-color: #222;
         word-break: keep-all;
+      }
+      .url {
+        color: #0f0;
+        text-decoration: underline;
       }
     </style>
 
@@ -54,166 +64,131 @@
 
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-        <section data-markdown data-separator-notes="XXX" id="title-page">
-          ## Electron Hacking for Beginners
-          &nbsp; 
-          &nbsp; 
-          A gentle introduction
-          to a very large codebase
+        <section id="title-page">
+          <h2>Electron Hacking for Beginners</h2>
+          A gentle introduction to a very large codebase
 
-          XXX
-          Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft.
+          FIXME: add my name and contact
 
-          Before that I worked for about five years on Ubuntu Linux,
-
-          and before that I wrote most of the BitTorrent app named Transmission.
-
-          So I've done open source for awhile now.
-        </section>
-
-        <section id="intent">
-          <p>Electron's developer community is high-quality,<br/>but small.</p>
-          <p>&nbsp;</p>
-          <p>This walkthrough shows how get started on Electron in three sections:</p>
-          <p>
-            <ol>
-              <li>The Tools <span class="secondary_text">(getting and building the code)</span></li>
-              <li>The Code <span class="secondary_text">(understanding the code)</span></li>
-              <li>Putting It Into Practice <span class="secondary_text">(changing the code)</span></li>
-            </ol>
           <aside class="notes">
-          <p>In a lot of ways we're a traditional open source project:
-             we've got a CoC, governance structure, small team from a
-             frustrating number of timezones, etc.</p>
-
-          <p>But <em>unlike</em> a lot of open source projects, at least the
-             ones I've worked on, nearly all maintainers are from companies
-             that rely on Electron commercially, and nearly all the patches
-             come from them.</p>
-
-          <p>And we love our commercial contributors.
-             - If your company will give you some tasking time to work on
-               Electron, come talk to us.
-             - If your company has a beta channel and wants to help us find bugs
-               during Electron beta tests, come talk to us.
-          </p>
-
-          <p>But still, we don't see that many code volunteers come in
-             out of the blue, so this talk is mostly about coding.
-             What's the problem?
-             Electron is MIT licensed, with no CLA, so it's not the license.
-             And there is an ever-growing number of apps using Electron,
-             so it's not a lack of interested parties.</p>
-
-          <p>I think what's going on is Electron's got a reputation that its
-             code is just too big and scary. This presentation is
-             - to show you that it's not as hard as it sounds
-             - to show you how to dive in,
-             - and importantly, to show you why you might want to dive in.
-             I'll do this in three parts:</p>
-
-          <p><b>fragment</b> The tools. Building Electron takes a few tools you've used and a few weird ones you haven't, unless you're paid write web browsers.</p>
-          <p><b>fragment</b> The code. Yes, the code is big. Really big. Don't Panic.</p>
-          <p><b>fragment</b> Taking action. We'll walk through a real Electron bug and fix it.</p>
-          <p>And all this should run about 20-25 minutes.</p>
-
+            <p>Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft.</p>
+            <p>And today I'm going to talk about why you should get involved with Electron's development.</p>
           </aside>
         </section>
 
-        <section id="whats-in-it-for-me">
-          <h3>Why Get Involved?</h3>
+        <section id="topics">
+          <h3>Getting Involved!</h3>
           <ol>
-            <li class="fragment">Scratch an itch</li>
-            <li class="fragment">More first-class desktop apps everywhere</li>
-            <li class="fragment">Maybe find a more interesting job?</li>
-            <li class="fragment">Use existing skills and learn new ones</li>
+            <li>Why?</li>
+            <li>How?
+              <ul>
+                <li>Getting the code</li>
+                <li>Building the code</li>
+                <li>Understanding the code</li>
+              </ul>
+            </li>
+            <li>Live coding demo</li>
           </ol>
 
           <aside class="notes">
-            <p>Why Get Involved?</p>
-
-            <p>Maybe this slide isn't needed since you all chose to watch this talk,
-               but I want to cover this quickly since there are a few reasons
-               that might not be obvious.</p>
-
-            <p><b>fragment</b>
-              Maybe you work on an Electron app and you've found a bug.
-               But since there are only a handful of full-time maintainers,
-               it never gets prioritized. "Patches welcomed" may be a cliche,
-               but it's also true.</p>
-
-            <p><b>fragment</b>
-              Maybe you and want more first-class apps to be released for
-              your Mac or Linux desktop at the same time as on Windows,
-              instead of as an afterthought or not at all.
-              Would the Electron apps that you use be running on your desktop
-              if their authors had to write three native versions?</p>
-
-            <p><b>fragment</b>
-              Maybe you're looking for more interesting full-time work and
-              you noticed earlier where I said how many companies are using Electron.</p>
-
-            <p><b>fragment</b>
-              Nobody ever talks about this, but this is my favorite one.
-              Electron uses JavaScript, C++, Objective C, Typescript, Python.
-              It uses Windows native API, Mac native API, GTK+, dbus, POSIX,
-              IPC, Chai, and the list goes on.
-              If you know any of those, that's enough to get a foothold
-              into the code.
-              But what sets Electron apart from a lot of projects is the
-              chance to choose from that long shopping list what you'd like
-              to learn <em>while using</em> what you already know.</p>
+          <p>So we'll go over why you would want to do that,</p>
+          <p>how to do that,</p>
+          <p> -- including the mechanics of getting and building the code, and finding your way around it--</p>
+          <p>and we'll tie it all together with a live coding example.</p>
+          <p>So. This talk is about coding, but if you're not a coder, there are other ways to help.</p>
+          <p>If you're bilingual, there is a project to translate our documentation.</p>
+          <p>If you're in QA, we have a group made up of QA people from other Electron apps.
+             Come and learn from them.</p>
+          <p>If you have an app with a beta channel and you want to help us find bugs in
+             Electron's beta releases, come talk to us.</p>
           </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="part-1-the-tools">
-          #### Part 1 of 3
-          ## The Tools
+        <section id="why-get-involved">
+          <h3>Why Get Involved?</h3>
+          <div style="display: grid; grid-template-columns: 3fr 1fr 1fr 1fr 1fr; grid-column-gap: 0.5em">
+            <div class="fragment"><img class="why_image" src="assets/tux.png"> <img class="why_image" src="assets/mac-os.png"></div>
+            <div class="fragment"><img class="why_image" src="assets/Light-bulb-icon.png"/></div>
+            <div class="fragment"><img class="why_image" src="assets/bag-of-money.png"/></div>
+            <div class="fragment"><img class="why_image" style="height: 150px; padding-top: 33px" src="assets/happy.png"/></div>
+            <div class="fragment"><img class="why_image" src="assets/infinity-gauntlet.png"/></div>
+          </div>
+          <aside class="notes">
+            <p>So, why get involved?</p>
+            <p><b>FRAGMENT (show tux)</b></p>
+            <p>First, maybe you're a developer who doesn't use Windows.</p>
+            <p>Would all the Electron apps that you use still exist
+               if the people who made them had to write and test three separate native apps?</p>
 
-          XXX
+            <p><b>FRAGMENT (show lightbulb)</b></p>
+            <p>Maybe you want to put your skills to use and also learn new skills.
+               Electron uses a <em>lot</em> of languages and tools.
+               <ol>
+                 <li>JavaScript</li>
+                 <li>TypeScript</li>
+                 <li>C++</li>
+                 <li>Python</li>
+                 <li>Objective C.</li>
+                 <li>We use Mac APIs</li>
+                 <li>Windows APIs</li>
+                 <li>we use posix, GTK+, and dbus on Linux</li>
+                 <li>our tests use chai</li>
+                 <li>our CI uses docker</li>
+                 <li>...and so many more. I literally could not name them all.</li>
+               </ol></p>
+            <p>And maybe that list feels overwhelming at first.
+               But if you get just one thing from this talk, I want you to understand
+               that <b>you can</b> do good things on Electron even if you only know one of those.
+               <em>Nobody</em> understands the whole list, so you're in good company.
+               And if you do know one or two of those things and want to learn others,
+               Electron has so many more opportunities than your average project.</p>
+            <p>Electron's code is big and isn't always easy, but it often it is.
+               <b>You can</b> do good things on Electron even if you are just starting out.</p>
 
-          Okay so let's start with the tools.
-        </section>
+            <p><b>FRAGMENT (show bag of money)</b></p>
+            <p>Maybe you're looking for better-paying work.</p>
+            <p>Electron's in an interesting place:
+               There are a <b>lot</b> of apps shipping on Electron,
+               but if Application X hits some weird issue,
+               very few people know how to dig deep into Electron's source and fix it.</p>
+            <p>I heard one manager say that
+               if another team wanted their Electron person,
+               they'd have to take them over that manager's dead body.</p>
 
-        <section data-markdown data-separator-notes="XXX" id="os-specific-prerequisites">
-          FIXME: this topic is too minor to be its own slide. Merge with build-tools intro.
+            <p><b>FRAGMENT (show smiley)</b></p>
+            <p>Related to the last two, maybe you're looking for more <em>interesting</em> work.</p>
+            <p>That list of languages and technologies
+               I just rattled off means that you can hack on Electron
+               for a <b>long</b> time without stagnating, without getting bored.</p>
 
-          ### OS-specific prerequisites
+            <p><b>FRAGMENT (infinity gauntlet)</b></p>
+            <p>Lastly, power. Influence.</p>
+            <p>Electron is a community-based project. We've got a governance structure,
+               a code of conduct, maintainers around the world -- but there's only about
+               a dozen of us full-time.</p>
+            <p>Anyone in this room, if they wanted to invest the time,
+               can go from having no say to having a very prominent say.</p>
+            <p>As long as it's not to the detriment of others, we're very flexible</p>
 
-          Instructions at [electronjs.org/docs/](https://electronjs.org/docs/development/build-instructions-gn)
-
-          You've probably done this before.
-
-          * Ex: installing Python 2.7 on macOS with `brew`
-          * Ex: installing [Node.js](https://nodejs.org/)
-
-          XXX
-          There are platform-specific tools you need to install first.
-
-          These are documented at electronjs.org/docs and I'm going to skip past them because most developers have already used or heard of these and so ... they're not scary.
-
-          For example if you're attending an Electron conference, you've probably installed Node
-
-          And if you're attending an Electron conference and have a Mac, and you've probably installed something using homebrew.
-
-          So moving right along...
+          </aside>
         </section>
 
         <section id="code-what-code">
-          <h4>What gets built?</h4>
+          <h4>What code do I need?</h4>
           Electron, Node, and Chromium
           <p class="fragment">...and Node's dependencies, like brotli, http_parser, llhttp, nghttp2, v8, zlib </p>
           <p class="fragment">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
           <p class="fragment">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
           <aside class="notes">
-            <p>What gets built?</p>
+            <p>Alright, if any of those sounded interesting,
+               the next thing to do is get the code.</p>
 
-            <p>Well, Electron <em>is</em> Node plus Chromium plus features.</p>
+            <p>So, what do you need to get? Well as you know, Electron is Node plus Chromium plus features.</p>
 
-            <p>We build it all together to ensure everything's compatible.
+            <p>And we compile all their sources to ensure everything's compatible.
                For example,
                everything needs to have the same compiler flags.
-               We need to ensure that Chromium and Node use the same version of V8.</p>
+               And we also need to ensure that Chromium and Node use the same version of V8.</p>
 
             <p><b>fragment</b>
             Oh yeah, v8. Node has some dependencies, and we need to build those too.</p>
@@ -222,179 +197,120 @@
             And so does Chromium</p>
 
             <p><b>fragment</b>
-            Oh, and Chromium's dependencies have dependencies.
-            If you ever type `npm install`, you might be feeling some deja vu here.
+            Oh, and Chromium's dependencies have dependencies too.
+            When you add everything up, it's about 60 million LOC.
             </p>
           </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="sloccount-all">
-          ### So that's a lot of code?
-
-          ```sh
-          ~/electron/electron-gn/master/src$ cloc *
-          
-           20,582,258  C++
-            7,477,199  C/C++ Header
-            7,116,240  JavaScript
-            3,857,228  C
-            2,143,884  Python
-              245,664  Typescript
-           ...
-
-           SUM: 59,751,830
-          ```
-
-          **Yes.**
-          XXX
-          All that adds up to about 60 million lines of code.
-          And here I think is where the reputation comes from,
-          and why Electron doesn't get as many casual code submissions.
-
-          If you find a bug, where do you even start?
-          Even if you just want to build it, where do you start?
-          Imagine how many repos you have to clone for that.
-          Imagine even tracking the dependencies to know what repos you'd need and keeping them all in sync.
-        </section>
-
-        <section id="introducing-the-tools">
-          <p><strike>$ npm install</strike></p>
-          <p class="fragment">Chromium Depot Tools<br/>(<a href="https://bit.ly/2svgqc5">https://bit.ly/2svgqc5</a>)</p>
-          <p class="fragment">Electron Build Tools<br/>(<a href="https://github.com/electron/build-tools">https://github.com/electron/build-tools</a>)</p>
+        <section id="introducing-electron-build-tools">
+          <p style="color: #f00; text-decoration: line-through;">$ brew install</p>
+          <p style="color: #f00; text-decoration: line-through;">$ npm install</p>
+          <p style="color: #f00; text-decoration: line-through;">$ sudo apt install</p>
+          <p class="url">https://github.com/electron/build-tools</p>
           <aside class="notes">
-          Well, you can't just 'npm install' them.
-          Chromium pulls from specific commits, not releases, and it also applies patches before building.
-          Node does that to V8, too.
-          And Electron does that to both Node <em>and</em> Chromium.
+          And for added fun, you can't just install them.
+          Chromium's dependencies aren't given by their version numbers; they use specific commit hashes.
+          And Chromium has custom patches for its dependencies.
+          Those have to be applied before building.
+          Node patches V8, too.
+          And Electron patches both Node <em>and</em> Chromium.
 
-          <i>next fragment</i>
-          Happily, Chromium has depot_tools, which has meta-checkout and meta-build tools named gclient and gn.
-          (gn stands for 'generate ninja', which is like saying 'generate makefiles' for the build tool named ninja)
+          <p>A Chromium project named depot-tools exists to do all this wrangling.
+            and Electron's docs show you how to do that manually.</p>
 
-          <i>next fragment</i>
-          And, also happily, Electron has its build-tools repo, which handles basic checkout and build,
-          has bells and whistles for swapping between different Electron build sandboxes,
-          - setting up git caching correctly,
-          - for keeping depot-tools up-to-date,
-          - for picking up sccache files from our CI builds to speed up your own build,
-          - and so on.
-          Electron's documentation describes everything you need to do it manually,
-          or you can just let build-tools do most of it for you.
-        </section>
+          <p>But Sam and Shelly and I recently wrote "electron build-tools",
+             Which has a javascript command-line tool named "e" to handle all the minutia for you.
+             <ul>
+               <li>It fetches depot-tools and keeps it up-to-date,</li>
+               <li>it has sensible defaults for git caching,</li>
+               <li>by default it tries to pick up sccache build files from our CI to speed up your own build.</li>
+               <li>and it does other helpful things. We'll see some them later in this talk.</li>
+             </ul>
+             So, electron build-tools is what I recommend.
+          </p>
 
-        <section data-markdown data-separator-notes="XXX" id="electron-build-tools-overview">
-          ### Introducing `e`
-
-          The Electron build tool
-          ```sh
-          FIXME: this is not readable. Need a better slide to introduce e.
-          $ e
-          Usage: e <command> [commandArgs...]
-
-          Electron build tool
-
-          Commands:
-            init [options] &lt;name&gt;  Create a new build config
-            sync [gclientArgs...]  Get or update source code
-            make [options]         Build Electron and other things
-            run                    Run the Electron executable
-            node                   Run the Electron build as if it were a Node.js executable
-            debug                  Run the Electron build with a debugger (gdb or lldb)
-            use <name>             Use build config <name> when running other `e` commands
-            show <subcommand>      Show info about the current build config
-            test [specRunnerArgs...]   Run Electron's spec runner
-            pr [options]               Open a GitHub URL where you can PR your changes
-            patches <basename>         Refresh the patches in $root/src/electron/patches/$basename
-          ```
-
-          XXX
-          FIXME: write script for this slide
-          `e` based off `nvm` which is node version manager
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="electron-build-tools-demo">
-          FIXME: another ugly slide
-          * `e init`: set up a new configuration for a specified directory, build type, compile flags, etc.
-          * `e sync`: get or update the source code
-          * `e make`: build it
-
-          * `e init --bootstrap`: does all three
-
-          * `e init --root=~/electron --bootstrap testing`
-            * Creates a new configuration named 'testing' to live in `~/electron`
-            * Checks out all the code (this will take a long time)
-            * Builds it (this will take even longer)
-
-          XXX
-          FIXME: write script for this slide
-        </section>
-
-        <section id="building-chromium-is-a-benchmark">
-          <img src="assets/chromium-anandtech-benchmark.png"/>
-          <aside class="notes">
-            <p>And, there's no sugarcoating it, the first time is rough &mdash;
-              there's a reason that they made building chromium a benchmark.</p>
-            <p>The silver lining is that thanks to a lot of caching,
-              after that first time, followup syncs and builds are faster.</p>
-            <p>FIXME this needs work</p>
+          <p>The command-line tool itself is called `e`.
+             There are a couple of prerequisites:
+             You need node because `e` is written in javascript.
+             You need python 2 to run some of Electron's build scripts.</p>
+          <p>All of this is laid out in the electron docs
+             and in the build-tools README.
+             Installing build-tools itself is pretty straightforward:</p>
+          <p><b>LIVE CODING ctrl-1 to install build tools</b></p>
+          <p>As you can see, I don't have `e` yet.</p>
+          <p>I am going to put it in my `electron` directory.
+             That's not hardcoded in the scripts; you can put it anywhere you like.</p>
+          <p>If you've used npm apps, you've probably done this step a hundred times:
+             clone the repo from GitHub, cd into it, and npm install.</p>
+          <p>Then I add the src directory to my path, and now my command line sees <code>e</code>.</p>
+          <p>That's the easy part!</p>
+          <p><b>VIDEO ENDS ctrl-0 and show e options</b></p>
+          <p>So, let's see what we can do with `e`.
+             Generally, you'll run these first four commands in order:</p>
+          <p><code>e init</code> creates a new project file.
+             which remembers where you told it to keep the source code,
+             and whether to make a test build or a release build.
+             And it sets up reasonable defaults for build-time environment variables.</p>
+          <p>You don't have to remember these specifics, but just to show you:
+             You can look at the environment variables it injects by running <code>e show env</code>.
+             And <code>e show current --filename</code> tells you where your project file lives,
+             so you can edit it by hand if you really need to.</p>
+          <p><code>sync</code> does what it says on the tin: gets or updates the source.
+             You need to do this after creating your project file to get source for the first time.
+             You'll also want to do it after checking out a different electron branch
+             to ensure all the dependencies are resynced to what the new branch needs.
+             For example if you check out an older version of Electron,
+             it will want to use older versions of Chromium and Node.</p>
+          <p>The next two are even more straightforward:
+             <code>make</code> makes it and <code>run</code> runs it.</p>
+          <p>Lastly, you can combine init, sync, and make all together by calling
+             init with the option <code>--bootstrap</code>.
+             This is your one-liner to get from zero to an Electron executable.</p>
+          <p><b>VIDEO ctrl-2 for bootstrap</b></p>
+          <p>Let's see what that looks like.</p>
+          <p>I'm going to run <code>e init</code>... oh actually let's time it to see how long it takes...
+             I'll keep the source in a directory named covalence-bug,
+             this will be a testing build,
+             I'll name the project file the same as the directory name,
+             and I'll bootstrap it.
+          <p>So now it's going to pull in and compile those sixty million lines of code that I mentioned.
+             The first time around, this does not run quickly.
+             Like I said, it does try to reuse precompiled pieces from our CI
+             and we use caching to make followup <code>e sync</code> calls faster,
+             but still.
+             There's a reason anandtech has a hardware benchmark that just lists Chromium build times.
+             This is not fast.</p>
+          <p>In fact, let's just speed up time a bit here...</p>
+          <p>If you read all that you can see it took 24 minutes to download the source</p>
+          <p>And there are 33 thousand pieces to build.</p>
+          <p>Let's speed up time again...</p>
+          <p>And you can see the bootstrap took about 2200 seconds, about 36 minutes.</p>
+          <p>So, hooray! With a bit of patience, or the ability to speed up time, you too can build Electron!</p>
+          <p>And because we've done that here, that means we now have code to look at!</p>
+          <p>We'll go to the root directory that we specified in <code>e init</code>.</p>
+          <p>You can use <code>e show</code></p> to query this stuff after the fact.</p>
+          <p>For example <code>e show current</code> confirms what we already knew, that covalence-bug is the active project file. And <code>e show root</code> shows what directory we told <code>e init</code> to use.</p>
+          <p>So that means you can do something like <code>cd $(e show root)</code></p>
+          <p>And when we do that, we get a directory full of who-knows-what.
+            android? chromeos? Electron doesn't run on those; what are these doing here?</p>
+          <p>Here's what's going on:
+             Out of those 60 million I mentioned, Electron is only about 70 thousand.
+             Less than a tenth of one percent.
+             Node, with <b>all</b> its dependencies included, is only about 5 million lines.
+             Everything else is Chromium or its deps.</p>
+          <p>There's just a lot fewer headaches for us when we use Chromium's directory layout and build structure.
+             So what you see here is more or less what you see when building Chromium.
+             The one thing that's different is this electron folder here.
+             That's where our code is.
+             We'll look at that in a minute,
+             But electron's code will make a little more sense if we run through some Chromium highlights first.</p>
           </aside>
-        </section>
-
-        <section id="part-2-the-code">
-          <h4>Part 2 of 3</h4>
-          <h2>The Code</h2>
-          <aside class="notes">
-            <p>So now, with a bit of patience, you can build Electron!</p>
-            <p>For the next few minutes let's do an exhaustive deep dive into those 60 million lines of code.</p>
-          </aside>
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="finding-the-relevant-code">
-          The Chromium modules that Electron uses most
-          ```sh
-          $ rg --no-filename '^#include "' \
-             | grep -v -e shell -e electron \
-             | perl -pe "s/\"(\w*?)\/(?:.*)\"/\$1/" \
-             | grep -v '\.h"' | sort | uniq -c | sort -nr | head -n8
-
-          972 #include base
-          423 #include content
-          358 #include ui
-          145 #include third_party
-          106 #include components
-           98 #include gin
-           95 #include extensions
-           92 #include services
-          ```
-
-          Their size
-          ```sh
-          $ cloc --quiet --json base content ui third_party/skia \
-            third_party/blink components gin extensions services \
-            | json SUM.code
-          11,645,172
-          ```
-
-          XXX
-          Well, that presentation might go long.
-          So instead I've grepped to see which Chromium modules Electron uses most.
-          And if we look at the top matches,
-          that brings the number down to 11 million.
-
-          Only 11 million! That's nothing.
-
-          By the way, that's a cognitive bias technique called anchoring.
-          These 11 million are what matter, but if I'd started the talk
-          with that, it would look pretty scary. This way, you know it's
-          a cakewalk compared to 60 million &mdash; you've got this.
-
-          So for the next few minutes let's do an exhaustive deep dive into
-          those mere 11 million lines of code.
-
-          FIXME: don't panic! this will take about FIXME minutes
         </section>
 
         <section data-separator-notes="XXX" id="getting-around-the-chromium-codebase">
+          <p><b>Electron's Most-Included Chromium Modules</b></p>
+          <p style="font-size: 0.6em">See also: <a href="https://cs.chromium.org/" class="url">https://cs.chromium.org/</a>
           <ul>
             <li class="fragment"><span class="filename">base/</span> <span class="secondary_text">general utils, eg: string tokenizing, logging</span></li>
             <li class="fragment"><span class="filename">gin/</span> <span class="secondary_text">convenience utilities for the JavaScript engine v8</span></li>
@@ -406,10 +322,17 @@
             <li class="fragment"><span class="filename">services/</span> <span class="secondary_text">cross-platform management of services</span></li>
           </ul>
           <aside class="notes">
+            <p>So I want to show you a quick summary of the Chromium Modules that
+               Electron includes the most.</p>
+            <p>Oh! And if you're following along, try going to cs.chromium.org,
+               then opt into the new layout, and click on <code>chromium/src</code>.
+               You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
+               And since Chromium kinda makes Intellisense cry, this search page can be really useful.</p>
             <ul>
-              <li> base: these are general purpose tools that anyone else can use.
-                   this is where you'll find your string tokenizers,
-                   command-line parsers, logging utils, C++ polyfills, and so on.</li>
+              <li>The first module you should know about is <code>base</code>.
+                  These are general purpose tools that anyone else can use.
+                  this is where you'll find your string tokenizers,
+                  command-line parsers, logging utils, C++ polyfills, and so on.</li>
 
               This is a really good starting point if you want to read some code,
               since it's well-written, it's all self-contained,
@@ -427,38 +350,37 @@
               <li> blink is chrome's famous rendering and layout engine.
               And it does a lot of heavy lifting for us.
               But usually when Electron refers to blink,
-              it's because some other chrome function uses a blink structure or a blink enumeration.
-              So while understanding Blink is useful, you'll spend less time in this module.</li>
+              it's because we need to include the declaration of a blink structure or a blink enumeration.
+              So while understanding Blink is useful, this is not where you'll spend most of your time.</li>
 
               <li> gfx: here are the fonts, color palettes, and rounded rectangles.
-              This builds on top of the 2D graphics library Skia, which I think is also used by Firefox.
-              FIXME: how to pronounce skia?</li>
+                This builds on top of the 2D graphics library Skia, which I think is also used by Firefox.</li>
 
               <li> views (and aura): framework for native UI resources
               like windows, widgets, textfields, menus.
-              One of Electron's biggest advantages is access to native features,
-              we have a lot of code that builds on top of views.</li>
+              One of Electron's biggest advantages is its access to native features,
+              so we have a lot of code that builds on top of views.</li>
 
               <li> content: next in the chromium stack is content.
               It's the core needed for a multi-process sandboxed renderer. It has all the web platform features like HTML5.
-              It does not include any other browser bells and whistles like extensions or spellchecking or printing.
-              It has a basic browser (named content shell) that renders pages on all platforms.
-              If you're embedding Chromium in an application, this is where you'd do it.
+              browser bells and whistles, like extensions or spellchecking or printing, those aren't in here.
+              Content has a basic browser (named content shell) that renders pages on all platforms.
+              If you're embedding Chromium in an application, this is where you'd start.
               To a Chromium developer, Electron probably looks like a content subclass,
               so let's come back to this module in the next slide.</li>
 
-              <li> components: this is where you'll find those in-process
-                bells and whistles that are important to a web browser app
-                but not intrinsic to the content itself.
+              <li> components: this is where you'll find most of those 
+                bells and whistles that you won't find in content --
+                they're important, but not intrinsic to content itself.
                 Here's where you'll find printing, translation detection,
                 autofill, bookmarks, you name it.</p>
 
-              <li> finishing the list is services: services reside in their own process and communicate only via IPC.
+              <li> finishing the list is services: services reside in their own processes and communicate only via IPC.
               There's no link-time or run-time exposure, no sharing of global state.
-              This has obvious security benefits.
+              Obviously, this has security benefits.
               It also has pragmatic benefits.
-              For example, audio is a service. If your platform's audio just bombs out,
-              Chromium can kill and restart the service without having to restart the whole browser process.</li>
+              For example, audio is a service. If your platform's audio just fails,
+              Chromium can stop and restart the audio service instead of the entire browser process.</li>
           </aside>
         </section>
 
