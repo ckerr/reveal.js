@@ -147,11 +147,10 @@
 
             <p><b>FRAGMENT (show bag of money)</b></p>
             <p>Maybe you're looking for better-paying work.</p>
-            <p>Electron's in an interesting place:
-               There are a <b>lot</b> of apps shipping on Electron,
+            <p>There are a <b>lot</b> of apps shipping on Electron,
                but if Application X hits some weird issue,
                very few people know how to dig deep into Electron's source and fix it.</p>
-            <p>I heard one manager say that
+            <p>I heard the manager on one Electron app say that
                if another team wanted their Electron person,
                they'd have to take them over that manager's dead body.</p>
 
@@ -266,6 +265,7 @@
           <p><b>VIDEO ctrl-2 for bootstrap</b></p>
           <p>Let's see what that looks like.</p>
           <p>I'm going to run <code>e init</code>... oh actually let's time it to see how long it takes...
+             Since we're going to fix a bug in our coding example,
              I'll keep the source in a directory named covalence-bug,
              this will be a testing build,
              I'll name the project file the same as the directory name,
@@ -323,7 +323,8 @@
             <p>Oh! And if you're following along, try going to cs.chromium.org,
                then opt into the new layout, and click on <code>chromium/src</code>.
                You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
-               And since Chromium kinda makes Intellisense cry, this search page can be very useful.</p>
+               And since Chromium's size makes it difficult to code search it in an IDE,
+               this search page can be very useful.</p>
             <ul>
               <li>The first module you should know about is <code>base</code>.
                   These are general purpose tools that anyone else can use.
@@ -334,12 +335,12 @@
               since it's well-written, it's all self-contained,
               and Electron uses it everywhere.
 
-              <li>gin: convenience utilities for v8. 
-                  Along with base, This would be another good starter:
+              <li>gin: which is convenience utilities for the javascript engine named v8. 
+                  This module is more complex, but might be another good starter candidate
+                  if you're wanting to learn more about V8:
               <ul>
                 <li> it's only a few thousand lines</li>
                 <li> Electron uses it everywhere</li>
-                <li> and it's a good gateway into v8.</li>
               </ul>
               </li>
 
@@ -354,15 +355,20 @@
 
               <li>views (and aura): framework for native UI resources
                   like windows, widgets, textfields, menus.
-                  One of Electron's biggest advantages is its access to native features,
+                  One of Electron's biggest advantages is that it gives you access to native features,
                   so we have a lot of code that builds on top of views.</li>
 
-              <li>content: next in the chromium stack is content.
-                  It's the core needed for a multi-process sandboxed renderer. It has all the web platform features like HTML5.
-                  browser bells and whistles, like extensions or spellchecking or printing, those aren't in here.
-                  Content has a basic browser (named content shell) that renders pages on all platforms.
+              <li>next in the chromium stack is content and this is the most important one here.
+                  It describes itself as "the core needed for a multi-process sandboxed renderer."
+                  Which to me means it's a minimum viable code for a browser and browser only --
+                  no extra features like spellcheck, printing, and so on --
+                  and someone like Chromium can come along and build a full web browser around it,
+                  or someone like Electron can come along and build Electron around it.
+                  Content has a public API of classes, and also a reference implementation
+                  named "content shell" that is a browser which renders pages on all platforms.
                   If you're embedding Chromium in an application, this is where you'd start.
-                  To a Chromium developer, Electron probably looks like a content subclass,
+                  To a Chromium developer, Electron probably just looks like a client of the
+                  content module.
                   so let's come back to this module in the next slide.</li>
 
               <li>components: this is where you'll find most of those 
