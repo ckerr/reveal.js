@@ -327,7 +327,7 @@
             <p>Oh! And if you're following along, try going to cs.chromium.org,
                then opt into the new layout, and click on <code>chromium/src</code>.
                You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
-               And since Chromium kinda makes Intellisense cry, this search page can be really useful.</p>
+               And since Chromium kinda makes Intellisense cry, this search page can be very useful.</p>
             <ul>
               <li>The first module you should know about is <code>base</code>.
                   These are general purpose tools that anyone else can use.
@@ -338,8 +338,8 @@
               since it's well-written, it's all self-contained,
               and Electron uses it everywhere.
 
-              <li> gin: convenience utilities for v8. 
-              Along with base, This would be another good starter:
+              <li>gin: convenience utilities for v8. 
+                  Along with base, This would be another good starter:
               <ul>
                 <li> it's only a few thousand lines</li>
                 <li> Electron uses it everywhere</li>
@@ -347,44 +347,68 @@
               </ul>
               </li>
 
-              <li> blink is chrome's famous rendering and layout engine.
-              And it does a lot of heavy lifting for us.
-              But usually when Electron refers to blink,
-              it's because we need to include the declaration of a blink structure or a blink enumeration.
-              So while understanding Blink is useful, this is not where you'll spend most of your time.</li>
+              <li>blink is chrome's famous rendering and layout engine.
+                  And it does a lot of heavy lifting for us.
+                  But usually when Electron refers to blink,
+                  it's because we need to include the declaration of a blink structure or a blink enumeration.
+                  So while understanding Blink is useful, this is not where you'll spend most of your time.</li>
 
-              <li> gfx: here are the fonts, color palettes, and rounded rectangles.
-                This builds on top of the 2D graphics library Skia, which I think is also used by Firefox.</li>
+              <li>gfx: here are the fonts, color palettes, and rounded rectangles.
+                  This builds on top of the 2D graphics library Skia, which I think is also used by Firefox.</li>
 
-              <li> views (and aura): framework for native UI resources
-              like windows, widgets, textfields, menus.
-              One of Electron's biggest advantages is its access to native features,
-              so we have a lot of code that builds on top of views.</li>
+              <li>views (and aura): framework for native UI resources
+                  like windows, widgets, textfields, menus.
+                  One of Electron's biggest advantages is its access to native features,
+                  so we have a lot of code that builds on top of views.</li>
 
-              <li> content: next in the chromium stack is content.
-              It's the core needed for a multi-process sandboxed renderer. It has all the web platform features like HTML5.
-              browser bells and whistles, like extensions or spellchecking or printing, those aren't in here.
-              Content has a basic browser (named content shell) that renders pages on all platforms.
-              If you're embedding Chromium in an application, this is where you'd start.
-              To a Chromium developer, Electron probably looks like a content subclass,
-              so let's come back to this module in the next slide.</li>
+              <li>content: next in the chromium stack is content.
+                  It's the core needed for a multi-process sandboxed renderer. It has all the web platform features like HTML5.
+                  browser bells and whistles, like extensions or spellchecking or printing, those aren't in here.
+                  Content has a basic browser (named content shell) that renders pages on all platforms.
+                  If you're embedding Chromium in an application, this is where you'd start.
+                  To a Chromium developer, Electron probably looks like a content subclass,
+                  so let's come back to this module in the next slide.</li>
 
-              <li> components: this is where you'll find most of those 
-                bells and whistles that you won't find in content --
-                they're important, but not intrinsic to content itself.
-                Here's where you'll find printing, translation detection,
-                autofill, bookmarks, you name it.</p>
+              <li>components: this is where you'll find most of those 
+                  bells and whistles that you won't find in content --
+                  they're important, but not intrinsic to content itself.
+                  Here's where you'll find printing, translation detection,
+                  autofill, bookmarks, you name it.</p>
 
-              <li> finishing the list is services: services reside in their own processes and communicate only via IPC.
-              There's no link-time or run-time exposure, no sharing of global state.
-              Obviously, this has security benefits.
-              It also has pragmatic benefits.
-              For example, audio is a service. If your platform's audio just fails,
-              Chromium can stop and restart the audio service instead of the entire browser process.</li>
+              <li>finishing the list is services: services reside in their own processes and communicate only via IPC.
+                  There's no link-time or run-time exposure, no sharing of global state.
+                  Obviously, this has security benefits.
+                  It also has pragmatic benefits.
+                  For example, audio is a service. If your platform's audio just fails,
+                  Chromium can stop and restart the audio service instead of the entire browser process.</li>
           </aside>
         </section>
 
         <section id="content-module">
+          <aside class="notes">
+            <p>OK that's the broad overview of Chromium, let's get back to the content module.</p>
+            <p>topics:
+               a couple of obvious ones:
+                 common/ is code that's shared between these pieces,
+                 utility/ is small utilities,
+              `shell/` - as mentioned, this is content's basic browser.
+              `renderer and browser`
+                      If you've written a hello world in Electron, this duality probably looks familiar.
+                      In Electron, the process that runs `package.json`'s `main` script is called
+                      __the browser process__, sometimes also called __the main process__.
+                      An Electron app always has exactly one browser process.
+                      Each web page in Electron runs in its own process,
+                      which is called __the renderer process__.
+                      And this architecture in content is where that separation comes from.
+              `public/` - This is the content module's public API.
+                          It's how the outside world uses the content module,
+                          The majority of Electron's C++ classes are subclasses from these public classes.
+                          in fact, to 
+
+          </aside>
+        </section>
+
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 1em">
             <div><!-- col 1 -->
               <h4>Chromium's<br/>Content Module:<br/>Public API</h4>
@@ -471,7 +495,7 @@
           </div>
           <aside class="notes">
             <p>When you look at Electron's code,
-              you'll see the same ideas in play.</p>
+               you'll see the same ideas in play.</p>
             <p>On the left here you'll see the JavaScript and typescript modules.
                This is the user-facing code that Electron applications import or require.</p>
             <p>On the right is the C++ layer that goes between lib and Chromium's content module.
