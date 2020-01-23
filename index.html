@@ -138,9 +138,9 @@
                </ol></p>
             <p>And maybe that list feels overwhelming at first.
                But if you get just one thing from this talk, I want you to understand
-               that <b>you can</b> do good things on Electron even if you only know one of those.
+               that <b>you can</b> do good things on Electron even if you only know one of those skills.
                <em>Nobody</em> understands the whole list, so you're in good company.
-               And if you do know one or two of those things and want to learn others,
+               And if you do know one or two of those things and want to learn more,
                Electron has so many more opportunities than your average project.</p>
             <p>Electron's code is big and isn't always easy, but it often it is.
                <b>You can</b> do good things on Electron even if you are just starting out.</p>
@@ -188,7 +188,7 @@
             <p>And we compile all their sources to ensure everything's compatible.
                For example,
                everything needs to have the same compiler flags.
-               And we also need to ensure that Chromium and Node use the same version of V8.</p>
+               And we also need to ensure that Chromium and Node use the same version of the javascript engine named V8.</p>
 
             <p><b>fragment</b>
             Oh yeah, v8. Node has some dependencies, and we need to build those too.</p>
@@ -216,27 +216,23 @@
           Node patches V8, too.
           And Electron patches both Node <em>and</em> Chromium.
 
-          <p>A Chromium project named depot-tools exists to do all this wrangling.
+          <p>Chromium has a project named depot-tools exists to do all this wrangling.
             and Electron's docs show you how to do that manually.</p>
 
           <p>But Sam and Shelly and I recently wrote "electron build-tools",
-             Which has a javascript command-line tool named "e" to handle all the minutia for you.
+             Which includes a command-line tool named "e" to handle all the minutia for you.
              <ul>
                <li>It fetches depot-tools and keeps it up-to-date,</li>
                <li>it has sensible defaults for git caching,</li>
-               <li>by default it tries to pick up sccache build files from our CI to speed up your own build.</li>
+               <li>by default it tries to speed up your build by seeing if it can reuse precompiled pieces made by our CI.</p>
                <li>and it does other helpful things. We'll see some them later in this talk.</li>
              </ul>
-             So, electron build-tools is what I recommend.
+             So, electron's build-tools is what I recommend.
           </p>
 
-          <p>The command-line tool itself is called `e`.
-             There are a couple of prerequisites:
-             You need node because `e` is written in javascript.
-             You need python 2 to run some of Electron's build scripts.</p>
-          <p>All of this is laid out in the electron docs
-             and in the build-tools README.
-             Installing build-tools itself is pretty straightforward:</p>
+          <p>We're planning to make build-tools an npm package.
+             For today, though, installing build-tools is still
+             pretty straightforward:</p>
           <p><b>LIVE CODING ctrl-1 to install build tools</b></p>
           <p>As you can see, I don't have `e` yet.</p>
           <p>I am going to put it in my `electron` directory.
@@ -408,7 +404,7 @@
           </aside>
         </section>
 
-
+        <section>
           <div style="display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 1em">
             <div><!-- col 1 -->
               <h4>Chromium's<br/>Content Module:<br/>Public API</h4>
