@@ -93,11 +93,11 @@
           <p>So we'll go over why you would want to do that,</p>
           <p>how to do that,</p>
           <p> -- including the mechanics of getting and building the code, and importantly, finding your way around the code --</p>
-          <p>and we'll finish by putting it into action with a short coding example.</p>
+          <p>and we'll finish by putting it into action with a coding example.</p>
           <p>This talk is about coding, but if you're not a coder, there are other ways to help.</p>
           <p>If you're bilingual, there is a project to translate our documentation.</p>
-          <p>If you're in QA, we have a group of QA people from other Electron apps
-             and you can come and learn from them.</p>
+          <p>If you're involved with QA, we have a group of QA people from other Electron apps
+             and you can come and learn from each other.</p>
           <p>If you have an app with a beta channel and you want to help us find bugs in
              Electron's betas, come talk to us.</p>
           </aside>
@@ -137,9 +137,7 @@
             <p>And maybe that sounds overwhelming;
                but if you get just one thing from this talk, I want you to understand
                that <b>you can</b> do good things on Electron even if you only know one of those skills.
-               <em>Nobody</em> understands the whole list, so you're in good company.
-               And if you do know one or two of those things and want to learn more,
-               Electron has so many more opportunities than your average project.</p>
+               <em>Nobody</em> understands the whole list, so you're in good company.</p>
             <p>Electron's code is big and isn't always easy, but it often it is.
                <b>You can</b> do good things on Electron even if you are just starting out.</p>
 
@@ -157,14 +155,14 @@
             <p>Related to the last two, maybe you're looking for more <em>interesting</em> work.</p>
             <p>When it comes to learning new things at your own speed,
                Electron is an evergreen project.
-               That list of skills I just rattled off means that you can hack on Electron
-               for a <b>long</b> time without stagnating, without getting bored.</p>
+               So if you do know one or two of those things and want to learn more,
+               Electron has so many more opportunities than your average project.</p>
 
             <p><b>FRAGMENT (infinity gauntlet)</b></p>
-            <p>Lastly, power. Influence.</p>
+            <p>Lastly, power and influence.</p>
             <p>Electron is a community-based project. We've got a governance structure,
-               a code of conduct, maintainers around the world -- but there's only about
-               a dozen of us full-time.</p>
+               a code of conduct, maintainers around the world -- but full time,
+               there's only about a dozen of us.</p>
             <p>Anyone in this room, if they wanted to invest the time,
                can go from having no say to having a very prominent say.</p>
             <p>As long as it's not to the detriment of others, we're very flexible</p>
@@ -223,8 +221,7 @@
              <ul>
                <li>It fetches depot-tools and keeps it up-to-date,</li>
                <li>it has sensible defaults for git caching,</li>
-               <li>by default it tries to speed up your build by seeing if it can reuse precompiled pieces made by our CI.</li>
-               <li>It does all this while trying to "Just work" right out-of-the-box,</li>
+               <li>it tries to speed up your build by seeing if it can reuse precompiled pieces from our CI.</li>
                <li>and it does some other helpful things which we'll see later in this talk.</li>
              </ul>
              So, electron's build-tools is what I recommend.
@@ -276,9 +273,8 @@
              I'll name the project file the same as the directory name,
              and I'll bootstrap it.
           <p>So now it's going to pull in and compile those sixty million lines of code.
-             And that's about as slow as it sounds like it would be,
-             no matter how much e tries to soften the blow.
-             There's a reason anandtech has a hardware benchmark that just lists Chromium build times.</p>
+             no matter how much e tries to soften the blow with caching,
+             the first time around it's gonna suck.</p>
           <p>In fact, let's just speed up time a bit here...</p>
           <p>OK. That 'finished' line there at the bottom means it took 24 minutes to download the source.</p>
           <p>And there are 33 thousand pieces to build.</p>
@@ -438,7 +434,7 @@
         <section id="electron-module">
           <aside class="notes">
             <p>Electron has two main folders for its code, <code>lib/</code> and <code>shell</code>.
-               Like content, <code>shell/</code> is our subclasses of the public content API.
+               Like `content shell`, <code>electron shell/</code> is our subclasses of content's public API.
                Basically, this code is an answer to the question "what would a Content application
                look like it was also made up of node modules and gave you full access to your desktop?"</p>
             <p>And we have <code>lib/</code> which is the javascript layer between electron shell
@@ -546,8 +542,8 @@ virtual bool AllowAppCache(const GURL& manifest_url,
                 </ul>
               </code>
             </p>
-            <p>Now, I'm pretending for this example I don't know whether Electron is using a GtkMessageDialog, a GtkDialog, or not using those at all but instead creating a custom GtkWindow.</p>
-            <p>But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's what every GTK+ widget uses, no matter what it's in.</p>
+            <p>Now, I'm pretending for this example I don't know where this code is or how it works -- though if I'd watched this talk, I'd know that the native UI code is in electron/shell/browser.</p>
+            <p>But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's how every GTK+ widget is shown.</p>
             <p>So I'll run the same test again inside a debugger and set gtk_widget_show() as a breakpoint.</p>
             <p><code>
                 <ul>
@@ -563,12 +559,12 @@ virtual bool AllowAppCache(const GURL& manifest_url,
             <p>here's where the dialog is created, and sometimes these use a default icon depending on the dialog type.</p>
             <p>let's go back to the debugger and see what type was passed in.</p>
             <p>looks like that type is atom::MESSAGE_BOX_TYPE_NONE, so that's not the problem.</p>
-            <p>Next I see us setting the dialog's image property if that imageskia isn't null.</p>
+            <p>Next I see us setting the dialog's image property if a image that's not null is passed in.</p>
             <p>let's go back to the debugger and check.</p>
             <p>walk up the callstack</p>
-            <p>and icon.isNull() is _true_, so this block of code is never reached, so this isn't the problem either.</p>
+            <p>icon is a null pointer, so this block of code is never reached, so this isn't the problem either.</p>
             <p>what else calls gtk_widget_show().</p>
-            <p>here's a call that only happens when we have a checkbox label... that's not going to be it, but just for fun let's ask the debugger what checkbox_label is --</p>
+            <p>here's a call that only happens when we have a checkbox label... that's not going to be it, but it's very cheap to confirm, we just need to look at the checkbox_label in settings --</p>
             <p>yep, checkbox_label is an empty string.</p>
             <p>so let's keep looking for gtk_widget_show() calls.</p>
             <p>AH now this is promising.</p>
