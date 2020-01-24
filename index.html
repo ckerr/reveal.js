@@ -71,7 +71,7 @@
           <p>Charles Kerr<br/><span style="font-size: smaller">Microsoft's Electron Team</span></p>
           <aside class="notes">
             <p>Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft. There, I'm one of the Electron maintainers.</p>
-            <p>And today I'm going to talk about why you should get involved with Electron's development.</p>
+            <p>And today I'm going to talk about why you should get involved with Electron's development, too.</p>
           </aside>
         </section>
 
@@ -92,14 +92,14 @@
           <aside class="notes">
           <p>So we'll go over why you would want to do that,</p>
           <p>how to do that,</p>
-          <p> -- including the mechanics of getting and building the code, and finding your way around it--</p>
-          <p>and we'll tie it all together with a live coding example.</p>
-          <p>So. This talk is about coding, but if you're not a coder, there are other ways to help.</p>
+          <p> -- including the mechanics of getting and building the code, and importantly, finding your way around the code --</p>
+          <p>and we'll finish by putting it into action with a short coding example.</p>
+          <p>This talk is about coding, but if you're not a coder, there are other ways to help.</p>
           <p>If you're bilingual, there is a project to translate our documentation.</p>
-          <p>If you're in QA, we have a group made up of QA people from other Electron apps.
-             Come and learn from them.</p>
+          <p>If you're in QA, we have a group of QA people from other Electron apps
+             and you can come and learn from them.</p>
           <p>If you have an app with a beta channel and you want to help us find bugs in
-             Electron's beta releases, come talk to us.</p>
+             Electron's betas, come talk to us.</p>
           </aside>
         </section>
 
@@ -115,8 +115,8 @@
           <aside class="notes">
             <p>So, why get involved?</p>
             <p><b>FRAGMENT (show tux)</b></p>
-            <p>First, maybe you're a developer who uses more than one desktop OS and you like a world with apps that run on all of them.</p>
-            <p>Do you use any apps that probably wouldn't exist on your OS if Electron didn't exist?</p>
+            <p>First, maybe you're a developer who uses more than one desktop and you like it when apps run on all of them.</p>
+            <p>Do you run anything that wouldn't be on your desktop if electron didn't exist?</p>
 
             <p><b>FRAGMENT (show lightbulb)</b></p>
             <p>Maybe you want to put your skills to use while also learning new ones.
@@ -134,8 +134,8 @@
                  <li>our CI uses docker</li>
                  <li>...and so many more. I literally could not name them all.</li>
                </ol></p>
-            <p>And maybe that list feels overwhelming at first.
-               But if you get just one thing from this talk, I want you to understand
+            <p>And maybe that sounds overwhelming;
+               but if you get just one thing from this talk, I want you to understand
                that <b>you can</b> do good things on Electron even if you only know one of those skills.
                <em>Nobody</em> understands the whole list, so you're in good company.
                And if you do know one or two of those things and want to learn more,
@@ -179,7 +179,7 @@
           <p class="fragment" style="font-size: 0.8em">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
           <p class="fragment" style="font-size: 0.6em">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
           <aside class="notes">
-            <p>Alright, if any of those sounded interesting,
+            <p>Alright, so if any of that sounded interesting,
                the next thing to do is get the code.</p>
 
             <p>So, what do you need to get? Well as you know, Electron is Node plus Chromium plus features.</p>
@@ -209,7 +209,7 @@
           <p class="url">https://github.com/electron/build-tools</p>
           <aside class="notes">
           And for added fun, you can't just install them.
-          Chromium's dependencies aren't given by their version numbers; they use specific commit hashes.
+          Chromium's dependencies aren't specified by their version numbers; they use specific commit hashes.
           And Chromium has custom patches for its dependencies --
           so those have to be applied before building.
           Node patches V8, too.
@@ -240,18 +240,17 @@
           <p>If you've used npm apps, you've probably done this before:
              clone the repo from GitHub, cd into it, and npm install.</p>
           <p>Then I add the src directory to my path, and now my command line sees <code>e</code>.</p>
-          <p>That's the easy part!</p>
           <p><b>VIDEO ENDS ctrl-0 and show e options</b></p>
-          <p>So, let's see what we can do with `e`.
+          <p>Great! So, let's see what it can do.
             When you're starting out,
             these first four commands are likely to be the first four you'll use:</p>
           <p><code>e init</code> creates a new project file.
-             which remembers where you told it to keep the source code,
+             That file remembers where you wanted the source code to be kept,
              and whether to make a test build or a release build.
              And it sets up reasonable defaults for build-time environment variables.</p>
-          <p>Like I say, `e` tries to "just work", but to give you a sense of what
-             I mean by the environment variables,
-             You can look what it injects by running <code>e show env</code>.</>
+          <p>And these environment variables -- Like I say, `e` tries to "just work",
+             so you probably won't be changing these, but just to show you what I'm talking
+             about -- you can see what gets injected by running <code>e show env</code>.</>
           <p>Here you see the git caching that I mentioned earlier,
              and sccache here is how we try to speed up your build by reusing pieces from Electron's CI.</p>
              And <code>e show current --filename</code> tells you where your project file lives,
@@ -260,13 +259,13 @@
              If you haven't checked out the code yet -- such as after running `e init` for the first time -- this will fetch it.
              If you've already checked it out before, this will bring it up-to-date.
              So for example you'll want to sync after checking out a different electron branch
-             to ensure its dependencies match.
+             to make sure the dependencies match.
              Say you've checked out an older version of Electron --
-             that older Electron code wants to compile with use older versions of Chromium and Node.</p>
+             that older Electron code wants to compile with older versions of Chromium and Node.</p>
           <p>The next two are even more straightforward:
              <code>make</code> makes it and <code>run</code> runs it.</p>
           <p>Lastly, you can combine init, sync, and make all together by calling
-             init with the option <code>--bootstrap</code>.
+             init with the <code>--bootstrap</code> parameter.
              This one-liner will get you an Electron executable from scratch.</p>
           <p><b>VIDEO ctrl-2 for bootstrap</b></p>
           <p>Let's see what that looks like.</p>
@@ -276,14 +275,12 @@
              this will be a testing build,
              I'll name the project file the same as the directory name,
              and I'll bootstrap it.
-          <p>So now it's going to pull in and compile those sixty million lines of code that I mentioned.
-             And that's about as slow as it sounds.
-             Like I said, e tries to make things better with caching and distributed build pieces,
-             but still.
-             the first time is pretty harsh.
+          <p>So now it's going to pull in and compile those sixty million lines of code.
+             And that's about as slow as it sounds like it would be,
+             no matter how much e tries to soften the blow.
              There's a reason anandtech has a hardware benchmark that just lists Chromium build times.</p>
           <p>In fact, let's just speed up time a bit here...</p>
-          <p>OK. That 'finished' line there means it ook 24 minutes to download the source.</p>
+          <p>OK. That 'finished' line there at the bottom means it took 24 minutes to download the source.</p>
           <p>And there are 33 thousand pieces to build.</p>
           <p>Let's speed up time again...</p>
           <p>And you can see the bootstrap took about 2200 seconds, about 36 minutes.</p>
@@ -296,7 +293,7 @@
           <p>And when we do that, we get a directory full of who-knows-what.
             android? chromeos? Electron doesn't run on those; what is all this stuff?</p>
           <p>Here's what's going on:
-             Out of those 60 million lines I mentioned, Electron is only about 70 thousand.
+             Out of all those 60 million lines, Electron is only about 70 thousand.
              Less than a tenth of one percent.
              Even Node, with <b>all</b> its dependencies included, is only about 5 million lines.
              Everything else is Chromium. Or its deps.</p>
@@ -371,7 +368,7 @@
                   no extra features like spellcheck, printing, and so on --
                   and someone like Chromium can come along and build a full web browser around it,
                   or someone like Electron can come along and build Electron around it.
-                  Content has a public API of classes, and also a reference implementation
+                  Content has a public API, and also a reference implementation
                   named "content shell" which renders pages on all platforms.
                   If you're embedding Chromium in an application, content is where you'd start --
                   so let's come back to this module in the next slide.</li>
@@ -386,141 +383,80 @@
                   There's no link-time or run-time exposure, no sharing of global state.
                   Obviously, this has security benefits.
                   It also has pragmatic benefits.
-                  For example, audio is a service. If your platform's audio just fails,
-                  Chromium can stop and restart the audio service instead of the entire browser process.</li>
+                  For example, audio is a service. If your platform's audio just crashes,
+                  Chromium can stop and restart the audio process instead of the entire browser process.</li>
           </aside>
         </section>
 
         <section id="content-module">
+          &nbsp;
           <aside class="notes">
-            <p>OK that's the broad overview of Chromium, let's get back to the content module.</p>
-            <p>topics:
-               a couple of obvious ones:
-                 common/ is code that's shared between these pieces,
-                 utility/ is small utilities,
-              `shell/` - as mentioned, this is content's basic browser.
-              `renderer and browser`
-                      If you've written a hello world in Electron, this duality probably looks familiar.
-                      In Electron, the process that runs `package.json`'s `main` script is called
-                      __the browser process__, sometimes also called __the main process__.
-                      An Electron app always has exactly one browser process.
-                      Each web page in Electron runs in its own process,
-                      which is called __the renderer process__.
-                      And this architecture in content is where that separation comes from.
-              `public/` - This is the content module's public API.
-                          It's how the outside world uses the content module,
-                          The majority of Electron's C++ classes are subclasses from these public classes.
-                          in fact, to 
-
+            <p>OK those are Chromium's main modules, at least as seen by Electron.</p>
+            <p>Let's finish our Chromium overview by going back into the content module.</p>
+            <p>Even just looking at the foldernames at the top of Content,
+               there are a few important patterns here that will repeat in the rest of Chromium and Electron.
+               These are why I said Electron's code will make more sense after we look at this,</p>
+            <p>so I first want to point out these two names, <code>renderer/</code> and </code>browser/</code>.</p>
+            <p>The Renderer process renders content.
+               In Chromium, a new renderer process is created for each website opened in a new tab --
+               so an app can have any number of these processes.</p>
+            <p>The browser process, which we sometimes also call the main process,
+               is responsible for pretty much everything else, like managing the native user interface as well as disk and network IO.
+               There is always exactly one browser process in a content app.</p>.
+            <p>And, since Electron is deeply based on this model,
+               it has the exact same division of labor between one browser and some number of renderers.
+               That's why even Electron's "hello world" app, electron-quick-start, has main.js and renderer.js files.</p>
+            <p>Some of the folders here also have patterns that repeat:</p>
+            <ul>
+              <li><code>utility/</code> is for tasks that can be performed in a utility thread</li>
+              <li><code>app/</code> is for the scaffolding where you take all this embeddable stuff
+                  and turn it into an actual executable that you can start up and run</li>
+              <li><code>common/</code> is for code that's shared between the other folders at this level.</li>
+            </ul>
+            <p>Next, we go into the <code>public/</code> directory.
+               This is the public API that's intended for clients -- like Chromium and Electron -- to subclass from.
+               And in here you see the exact same patterns for how the code is laid out.</p>
+            <p>The last thing before we move on to Electron is the <code>shell/</code> directory.
+               Again, you see the same patterns.
+               As mentioned before, this is kind of a reference implementation of a Content client.
+               So sometimes when you're trying to understand a concept, this is good reference to look at
+               whether or not Electron uses some particular part of it.</p>
           </aside>
         </section>
 
-        <section>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 1em">
-            <div><!-- col 1 -->
-              <h4>Chromium's<br/>Content Module:<br/>Public API</h4>
-              <h5>(<span class="filename">src/content/public/</span>)</h5>
-              <ul>
-                <li><span class="filename">app/</span></li>
-                <li><span class="filename" style="filter: brightness(120%);">browser/</span></li>
-                <li><span class="filename">child/</span></li>
-                <li><span class="filename">common/</span></li>
-                <li><span class="filename" style="filter: brightness(120%);">renderer/</span></li>
-                <li><span class="filename">test/</span></li>
-              </ul>
-            </div>
-            <div><!-- col 2 -->
-              <h4>Chromium's<br/>Content Module:<br/>Content Shell</h4>
-              <h5>(<span class="filename">src/content/shell/</span>)</h5>
-              <ul>
-                <li><span class="filename">android/</span></li>
-                <li><span class="filename">browser/</span></li>
-                <li><span class="filename">common/</span></li>
-                <li><span class="filename">gpu/</span></li>
-                <li><span class="filename">renderer/</span></li>
-                <li><span class="filename">utility/</span></li>
-              </ul>
-            </div>
-          </div>
+        <section id="palette-cleanser">
+          <img src="assets/derpy-cat.jpg"/>
           <aside class="notes">
-            <p>
-            Now back to Chromium's content module.
-            Content defines the interfaces for a bare-bones multiprocess browser.
-            Like I said, if you're embedding Chromium, this is where you start.</p>
-            </p>
-
-            <p>
-            Here, The left column shows the modules in content's public API.
-            Most of Electron's C++ code is in service of subclasses these.
-            </p>
-
-            <p>
-            And if you've written even Hello World in Electron,
-            the separation of concerns between browser and renderer
-            will already look familiar. This is where that separation
-            in Electron comes from.
-            </p>
-
-            <p>
-            As mentioned before, content has its own basic implementation called "content shell"
-            and here on the right you can see its modules.
-            So a lot of the time you can use this as reference code
-            and see what pieces Electron re-used and what it
-            couldn't reuse due to its own requirements.
-            </p>
-
+            <p>OK. Electron's code is going to go a lot faster,
+               but I know that was a lot to take in, so before we start,
+               as a pallete cleanser,
+               so here's a picture of a derpy cat.</p>
+            <p>All good? OK, onward we go!</p> 
           </aside>
         </section>
 
-        <section id="electron-modules">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 1em">
-            <!--<div style="display: grid; grid-template-columns: 1fr 1fr; grid-column-gap: 1em">-->
-            <div><!-- col 1 -->
-              <h4>Electron's JavaScript<br/>Modules</h4>
-              <h5>(<span class="filename">src/electron/lib/</span>)</h5>
-              <ul>
-                <li><span class="filename">browser/</span></li>
-                <li><span class="filename">common/</span></li>
-                <li><span class="filename">content_script/</span></li>
-                <li><span class="filename">isolated_renderer/</span></li>
-                <li><span class="filename">renderer/</span></li>
-                <li><span class="filename">sandboxed_renderer/</span></li>
-                <li><span class="filename">worker/</span></li>
-              </ul>
-            </div>
-            <div><!-- col 2 -->
-              <h4>Electron's C++<br/>Modules</h4>
-              <h5>(<span class="filename">src/electron/shell/</span>)</h5>
-              <ul>
-                <li><span class="filename">app/</span></li>
-                <li><span class="filename">browser/</span></li>
-                <li><span class="filename">common/</span></li>
-                <li><span class="filename">renderer/</span></li>
-                <li><span class="filename">utility/</span></li>
-              </ul>
-            </div>
-          </div>
+        <section id="electron-module">
           <aside class="notes">
-            <p>When you look at Electron's code,
-               you'll see the same ideas in play.</p>
-            <p>On the left here you'll see the JavaScript and typescript modules.
-               This is the user-facing code that Electron applications import or require.</p>
-            <p>On the right is the C++ layer that goes between lib and Chromium's content module.
-               This is where we subclass from content's public APIs,
-               where platform native features go,
-               and where we tie into Node.</p>
-            <p>In both of these columns,
-               app, browser, common, renderer, and utility
-               all carry the same meanings as in chromium's content module.</p>
+            <p>Electron has two main folders for its code, <code>lib/</code> and <code>shell</code>.
+               Like content, <code>shell/</code> is our subclasses of the public content API.
+               Basically, this code is an answer to the question "what would a content module application
+               look like it was also made up of node modules and gave you full native desktop access?"</p>
+            <p>And we have <code>lib/</code> which is the javascript layer between shell and your applications.
+              This is where the code lives for all the Electron APIs that your applications import.
+              If we can do it in Javascript, it's here. Otherwise, we do it back in electron shell.</p>
+            <p><b>navigate through shell and lib directories</b></p>
+            <p>And so when we poke around in <code>shell</code> and <code>lib</code>,
+               we see the same patterns at play again. Division of labor between
+               browser and renderer, a place for shared common code, and so on.</p>
           </aside>
         </section>
 
         <section id="finding-reference-points">
-          <p>So if you get a crash in <span class="filename">electron/shell/browser/atom_browser_client</span>:</p>
+          <p>So if you get a crash in<br/><span class="filename">electron/shell/browser/atom_browser_client</span>:</p>
           <p>
             <ul>
-              <li>You know a reference impl is at <span class="filename">content/shell/browser/shell_content_browser_client.cc</span></li>
-              <li>You know the parent class is at <span class="filename">content/public/browser/content_browser_client.h</span></li>
+              <li>You know a reference impl is at<br/><span class="filename">content/shell/browser/shell_content_browser_client.cc</span></li>
+              <li>You know the parent class is at<br/><span class="filename">content/public/browser/content_browser_client.h</span></li>
             </ul>
           </p>
 
@@ -537,7 +473,7 @@
         </section>
 
         <section id="finding-the-answer">
-          <p>And when you open up <span class="filename">content/public/browser/content_browser_client.h</span>...</p>
+          <p>And when you open up<br/><span class="filename">content/public/browser/content_browser_client.h</span>...</p>
           <p><pre><code>// Embedder API (or SPI) for participating in browser
 // logic, to be implemented by the client of the content browser.
 // See ChromeContentBrowserClient for the principal impl.
@@ -558,49 +494,23 @@ virtual bool AllowAppCache(const GURL& manifest_url,
           </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="the-biggest-class">
-          FIXME: is this content needed?
-          FIXME: there is no flow from previous slide
-          FIXME: this slide is even uglier than the others
-
-          **Excerpt from Electron's largest class, atom::api::WebContents**
-          ```cpp
-            void LoadURL(const GURL& url, const mate::Dictionary& opts);
-            base::string16 GetTitle() const;
-            bool IsLoading() const;
-            void Stop();
-            void ReloadIgnoringCache();
-            void GoBack();
-            void GoForward();
-            bool IsCrashed() const;
-            void SetUserAgent(const std::string& user_agent);
-            std::string GetUserAgent();
-            void InsertCSS(const std::string& css);
-            void OpenDevTools(mate::Arguments* args);
-          ```
-
-          XXX
-          This <i>is</i> the largest class we've got.
-          And, while the size of the whole project can be overwhelming,
-          the individual pieces aren't actually that scary.
-
-          To be clear: no, I'm not saying Electron is easy.
-          Some of it is, but a lot of it isn't.
-
-          But if you've written Electron apps,
-          if you've used `win.loadURL()` or `win.getTitle()`,
-          you already see the big picture, and that can be your guide
-          when you're reading and learning the littler pictures.
-        </section>
-
-        <section id="crazy-wall">
-          <img src="assets/my-brain-is-full.jpg"/>
+        <section id="the-biggest-class">
           <aside class="notes">
-            <p>OK that's probably enough theory.</p>
-            <p>You all now know how to get and build one of the world's largest open source codebases.</p>
-            <p>You have an idea of how 11 million puzzle pieces fit together.</p>
-            <p>And what you don't know, you know where to start looking to find out.</p>
-            <p>Let's do something with all this knowledge.</p>
+            <p>One final thing about the code.
+               I've mentioned a few times how large the codebase is,
+               and that scares some people off.
+               So I wanted to show you this:</p>
+            <p><b>live code <code>find ./ -name "*.cc" | xargs du -s | sort -n</code></b></p>
+            <p>Like I said, you're going to find weird code that you don't understand,
+              and that's OK because nobody understands all of it and you're in good company.</p>
+            <p><em>but</em></p>
+            <p>Here we've got the largest source file in electron, atom_api_web_contents.
+               And if we open up its class definition,
+               we see it's full of things like <code>OpenDevTools()</code> and
+               and <code>IsDevToolsOpened()</code>.</p>
+            <p>Even though Electron takes time to learn,
+               a lot of its code maps directly to concepts that you
+               already know if you've ever written an Electron application.</p>
           </aside>
         </section>
 
