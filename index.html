@@ -413,25 +413,25 @@
                   and turn it into an actual executable that you can start up and run</li>
               <li><code>common/</code> is for code that's shared between the other folders at this level.</li>
             </ul>
-            <p>Next, we go into the <code>public/</code> directory.
-               This is the public API that's intended for clients -- like Chromium and Electron -- to subclass from.
+            <p>And if we look in the <code>public/</code> directory,
+               This is the public API that's intended for clients like Chromium and Electron to subclass from.
                And in here you see the exact same patterns for how the code is laid out.</p>
-            <p>The last thing before we move on to Electron is the <code>shell/</code> directory.
+            <p>And real quickly I want to point out the <code>shell/</code> directory.
                Again, you see the same patterns.
                As mentioned before, this is kind of a reference implementation of a Content client.
-               So sometimes when you're trying to understand a concept, this is good reference to look at
-               whether or not Electron uses some particular part of it.</p>
+               So sometimes when you're trying to understand a concept in Electron,
+               this is good reference to look at.</p>
+            <p>OK. Electron's code is all the same patterns so looking at it is going to go quickly.
+               but I know that was a lot to take in just now, so before we start,
+               as a pallete cleanser,
+               so here's a picture of a derpy cat.</p>
           </aside>
         </section>
 
         <section id="palette-cleanser">
           <img src="assets/derpy-cat.jpg"/>
           <aside class="notes">
-            <p>OK. Electron's code is going to go a lot faster,
-               but I know that was a lot to take in, so before we start,
-               as a pallete cleanser,
-               so here's a picture of a derpy cat.</p>
-            <p>All good? OK, onward we go!</p> 
+            <p>All good? OK, onward!</p> 
           </aside>
         </section>
 
@@ -439,15 +439,19 @@
           <aside class="notes">
             <p>Electron has two main folders for its code, <code>lib/</code> and <code>shell</code>.
                Like content, <code>shell/</code> is our subclasses of the public content API.
-               Basically, this code is an answer to the question "what would a content module application
-               look like it was also made up of node modules and gave you full native desktop access?"</p>
-            <p>And we have <code>lib/</code> which is the javascript layer between shell and your applications.
+               Basically, this code is an answer to the question "what would a Content application
+               look like it was also made up of node modules and gave you full access to your desktop?"</p>
+            <p>And we have <code>lib/</code> which is the javascript layer between electron shell
+              and your applications.
               This is where the code lives for all the Electron APIs that your applications import.
               If we can do it in Javascript, it's here. Otherwise, we do it back in electron shell.</p>
             <p><b>navigate through shell and lib directories</b></p>
             <p>And so when we poke around in <code>shell</code> and <code>lib</code>,
                we see the same patterns at play again. Division of labor between
                browser and renderer, a place for shared common code, and so on.</p>
+            <p>And since the renderer process renders
+               and the browser process handles most of the other things like native ui,
+               it'll come as no surprise that the native UI code is in electron/shell/browser/.</p>
           </aside>
         </section>
 
@@ -515,149 +519,80 @@ virtual bool AllowAppCache(const GURL& manifest_url,
         </section>
 
         <section id="part-3-taking-action">
-          <h4>Part 3 of 3</h4>
-          <h2>Taking Action</h2>
+          <h2>Coding Example</h2>
           <aside class="notes">
-            <p>OK so remember back to the beginning when I said if you've got chai,
-               or IPC, or Windows, or Linux, or XYZ experience,
-               that can give you a foothold.</p>
-            <p>I also said that before Electron, I worked for Canonical on its
-               Linux desktop. So here's a bug I fixed very early on using only
-               my knowledge of Linux's GUI library named GTK+.</p>
-            <p>You don't need any GTK+ experience to follow along.
-               My point here is that, whichever of that shopping list of skills you have,
-               you can do good without memorizing 60 million lines of code first.</p>
+            <p>I joined Electron because I wanted to learn more web tech.
+               Before joining, I'd done a lot of code on Linux services
+               and Linux desktop apps.
+               but I guarantee this room understands writing web apps
+               better than I did then.</p>
+            <p>But like I said,
+               you can do good things on Electron even with only one
+               of the skills from that list I gave earlier.</p>
+            <p>So with my last five minutes I'm going to show a quick demo of that.
+               This is a bug that I fixed early on in Electron,
+               and really the only skill I needed to fix it was knowledge
+               of a Linux GUI library named GTK.</p>
+            <p>And don't worry, you don't need to know GTK to watch this.</p>
+            <p>So, the bug report was that on Linux, the `alert()` dialog
+               was showing the No Symbol icon.</p>
+            <p>Happily, that's super easy to test.</p>
+            <p>
+            <p><code>
+                <ul>
+                  <li>cd ~/covalence/electron-quick-start</li>
+                  <li>e show current</li>
+                  <li>e start</li>
+                </ul>
+              </code>
+            </p>
+            <p>Now, I'm pretending for this example I don't know whether Electron is using a GtkMessageDialog, a GtkDialog, or not using those at all but instead creating a custom GtkWindow.</p>
+            <p>But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's what every GTK+ widget uses, no matter what it's in.</p>
+            <p>So I'll run the same test again inside a debugger and set gtk_widget_show() as a breakpoint.</p>
+            <p><code>
+                <ul>
+                  <li>cd ~/covalence/electron-quick-start</li>
+                  <li>e show current</li>
+                  <li>e debug</li>
+                  <li>r .</li>
+                  <li><b>(open up devtools; queue up the alert dialog)</b></li>
+                  <li>break gtk_widget_show</li>
+                </ul>
+              </code>
+            </p>
+            <p>here's where the dialog is created, and sometimes these use a default icon depending on the dialog type.</p>
+            <p>let's go back to the debugger and see what type was passed in.</p>
+            <p>looks like that type is atom::MESSAGE_BOX_TYPE_NONE, so that's not the problem.</p>
+            <p>Next I see us setting the dialog's image property if that imageskia isn't null.</p>
+            <p>let's go back to the debugger and check.</p>
+            <p>walk up the callstack</p>
+            <p>and icon.isNull() is _true_, so this block of code is never reached, so this isn't the problem either.</p>
+            <p>what else calls gtk_widget_show().</p>
+            <p>here's a call that only happens when we have a checkbox label... that's not going to be it, but just for fun let's ask the debugger what checkbox_label is --</p>
+            <p>yep, checkbox_label is an empty string.</p>
+            <p>so let's keep looking for gtk_widget_show() calls.</p>
+            <p>AH now this is promising.</p>
+            <p>gtk_widget_show_all() tries to show its whole subtree of widgets, of UI components. </p>
+            <p>So maybe what's happening is GtkMessageDialog <i>always</i> has an icon widget, but it's just not shown when the icon property's not set.</p>
+            <p>If so, this call here would show that unset icon.</p>
+            <p>That would be consistent with the no-icon symbol.</p>
+            <p>Let's see what happens if we remove the `_all()` from this.</p>
           </aside>
         </section>
 
-        <section id="debugging">
-          <img src="assets/bug-report.png"/>
-          <aside class="notes">
-            <p>The bug report's screenshot says it all: on Linux, the `alert()` dialog is showing a No Symbol icon.</p>
-            <p>This should be easy to test.</p>
-          </aside>
+        <section id="thanks">
+          <h3>Thanks for listening!</h3>
+          <h4>Further reading</h4>
+          <p>
+            <ul>
+              <li><span class="url">https://github.com/electron/build-tools</span></li>
+              <li><span class="url">https://electronjs.org/docs/development</span></li>
+              <li><span class="url">https://cs.chromium.org/</span></li>
+              <li><span class="url">https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code</span></li>
+            </ul>
+          </p>
         </section>
-
-        <section id="final-thoughts-on-code">
-          <h3>Final thoughts on the codebase</h3>
-          <ul>
-          <li class="fragment">Electron is a good project for someone who knows X and wants to learn Y</li>
-          <li class="fragment">You already understand more than you think</li>
-          <li class="fragment">Don't Panic</li>
-          </ul>
-          <aside class="notes">
-          <p>As said in the last slide, <b>(fragment)</b> you understand more than you think.</p>
-          <p><b>(fragment)</b> When I started contributing to Electron, I'd never touched Node. So for me it was both unfamiliar *and* alien, and I stressed over that a lot.</p>
-          <p>The thing to understand is you've got millions of lines of code -- <b>everyone</b> is lost to some degree.</p>
-          <p>When I realized it's OK to be a <i>little</i> lost, that freed me up to stress about it less and focus and learn faster.</p>
-          <p><b>(fragment)</b> As an aside, Chromium has a lot of solid engineering. [read fragment aloud here] The Chromium directory named `base/` holds general-use tools, mostly self-contained, so it's not a bad place to start. You'll find Chromium's string manipulation, memory management, callback binding, and so on.</p>
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" data-background-video="assets/bugfix.webm" data-background-color="#000000">
-          XXX
-          make sure we have a fresh build
-
-          let's run electron-quick-start
-
-          open devtools
-
-          and pull up an alert dialog.
-
-          sure enough.
-
-          Now, I'm pretending for this example I don't know whether Electron is using a GtkMessageDialog, a GtkDialog, or not using those at all but instead creating a custom GtkWindow.
-
-          But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's what every GTK+ widget uses, no matter what type of class is aggregating it.
-
-          So I'll run the same test again inside a debugger and set gtk_widget_show() as a breakpoint.
-
-          open devtools again...
-
-          set the breakpoint... gdb is kind of slow.
-
-          the alert again...
-
-          cool. let's see where it's coming from.
-
-          ok this noise here is C++'s version of the green terminal windows in the matrix. You get used to it.
-
-          first thing I see here is it's in atom/browser/ui/message_box_gtk, which means it's likely our bug.
-
-          I see an argument named 'icon' of type imageskia, so maybe someone is passing in a broken icon.
-
-          let's open up atom/browser/ui/message_box_gtk line 49 and take a look.
-
-          here's where the dialog is created, and sometimes these use a default icon depending on the dialog type.
-
-          let's go back to the debugger and see what type was passed in.
-
-          looks like that type is atom::MESSAGE_BOX_TYPE_NONE, so that's not the problem.
-
-          Next I see us setting the dialog's image property if that imageskia isn't null.
-
-          let's go back to the debugger and check.
-
-          walk up the callstack
-
-          and icon.isNull() is _true_, so this block of code is never reached, so this isn't the problem either.
-
-          what else calls gtk_widget_show().
-
-          here's a call that only happens when we have a checkbox label... that's not going to be it, but just for fun let's ask the debugger what checkbox_label is --
-
-          yep, checkbox_label is an empty string.
-
-          so let's keep looking for gtk_widget_show() calls.
-
-          AH now this is promising.
-
-          gtk_widget_show_all() tries to show its whole subtree of widgets, of UI components. 
-
-          So maybe what's happening is GtkMessageDialog _always_ has an icon widget, but it's just not shown when the icon property's not set.
-
-          If so, this call here would show that unset icon.
-
-          That would be consistent with the no-icon symbol.
-
-          Let's see what happens if we remove the `_all()` from this.
-
-          rebuild
-
-          restart the process
-
-          pop up devools
-
-          show an alert
-
-          there we go!
-
-          We got it.
-
-          And although I knew some GTK+ to solve this bug, this one didn't really take any Electron.
-
-          (fast transition to)
-        </section>
-
-        <section id="conclusions">
-          <h3>What Have We Learned?</h3>
-          <li class="fragment">Whether you know Electron, GTK+, Chromium, Node.js, Windows, JS, C++, Obj-C, Carbon, Linux, or Docker... those are <i>all</i> skills that you can use on Electron.</li>
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="thanks">
-          ### Thanks for listening!
-
-          #### Further reading
-          * https://electronjs.org/docs/development
-
-          * https://cs.chromium.org/
-
-          * https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code
-
-          * https://www.patreon.com/sindresorhus
-        </section>
-
       </div>
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
