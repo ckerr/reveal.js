@@ -116,11 +116,10 @@
             <p>So, why get involved?</p>
             <p><b>FRAGMENT (show tux)</b></p>
             <p>First, maybe you're a developer who uses more than one desktop OS and you like a world with apps that run on all of them.</p>
-            <p>Would all the Electron apps that you use still exist
-               if the people who made them had to write and test three separate native versions?</p>
+            <p>Do you use any apps that probably wouldn't exist on your OS if Electron didn't exist?</p>
 
             <p><b>FRAGMENT (show lightbulb)</b></p>
-            <p>Maybe you want to put your skills to use and also learn new skills.
+            <p>Maybe you want to put your skills to use while also learning new ones.
                Electron uses a <em>lot</em> of languages and tools.
                <ol>
                  <li>JavaScript</li>
@@ -148,15 +147,17 @@
             <p>Maybe you're looking for better-paying work.</p>
             <p>There are a <b>lot</b> of apps shipping on Electron,
                but if Application X hits some weird issue,
-               very few people know how to dig deep into Electron's source and fix it.</p>
+               there aren't that many people who know how
+               to dig deep into Electron's source and fix it.</p>
             <p>I heard the manager on one Electron app say that
-               if another team wanted their Electron person,
-               they'd have to take them over that manager's dead body.</p>
+               another team could take their Electron person
+               over that manager's dead body.</p>
 
             <p><b>FRAGMENT (show smiley)</b></p>
             <p>Related to the last two, maybe you're looking for more <em>interesting</em> work.</p>
-            <p>That list of languages and technologies
-               I just rattled off means that you can hack on Electron
+            <p>When it comes to learning new things at your own speed,
+               Electron is an evergreen project.
+               That list of skills I just rattled off means that you can hack on Electron
                for a <b>long</b> time without stagnating, without getting bored.</p>
 
             <p><b>FRAGMENT (infinity gauntlet)</b></p>
@@ -174,9 +175,9 @@
         <section id="code-what-code">
           <h4>What code do I need?</h4>
           Electron, Node, and Chromium
-          <p class="fragment">...and Node's dependencies, like brotli, http_parser, llhttp, nghttp2, v8, zlib </p>
-          <p class="fragment">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
-          <p class="fragment">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
+          <p class="fragment" sytle="font-size: 0.9em">...and Node's dependencies, like brotli, http_parser, llhttp, nghttp2, v8, zlib </p>
+          <p class="fragment" style="font-size: 0.8em">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
+          <p class="fragment" style="font-size: 0.6em">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
           <aside class="notes">
             <p>Alright, if any of those sounded interesting,
                the next thing to do is get the code.</p>
@@ -195,7 +196,7 @@
             And so does Chromium</p>
 
             <p><b>fragment</b>
-            Oh, and Chromium's dependencies have dependencies too.
+            Oh, and Chromium's dependencies have dependencies.
             When you add everything up, it's about 60 million LOC.
             </p>
           </aside>
@@ -209,13 +210,13 @@
           <aside class="notes">
           And for added fun, you can't just install them.
           Chromium's dependencies aren't given by their version numbers; they use specific commit hashes.
-          And Chromium has custom patches for its dependencies.
-          Those have to be applied before building.
+          And Chromium has custom patches for its dependencies --
+          so those have to be applied before building.
           Node patches V8, too.
           And Electron patches both Node <em>and</em> Chromium.
 
-          <p>Chromium has a project named depot-tools exists to do all this wrangling.
-            and Electron's docs show you how to do that manually.</p>
+          <p>Chromium has a project named depot-tools to wrangle all this.
+            and Electron's documentation shows how to do that manually.</p>
 
           <p>But Sam and Shelly and I recently wrote "electron build-tools",
              Which includes a command-line tool named "e" to handle all the minutia for you.
@@ -223,15 +224,14 @@
                <li>It fetches depot-tools and keeps it up-to-date,</li>
                <li>it has sensible defaults for git caching,</li>
                <li>by default it tries to speed up your build by seeing if it can reuse precompiled pieces made by our CI.</li>
-               <li>While doing all this, it tries to "Just work" out-of-the-box,</li>
-               <li>and it does other helpful things. We'll see some them later in this talk.</li>
+               <li>It does all this while trying to "Just work" right out-of-the-box,</li>
+               <li>and it does some other helpful things which we'll see later in this talk.</li>
              </ul>
              So, electron's build-tools is what I recommend.
           </p>
 
-          <p>We're planning to make build-tools an npm package.
-             For today, though, installing build-tools is still
-             pretty straightforward.</p>
+          <p>We're going to make it an npm package.
+             For today, though, installing it is still pretty easy.</p>
           <p>Let me open a terminal here and I'll show you.</p>
           <p><b>LIVE CODING ctrl-1 to install build tools</b></p>
           <p>As you can see, I don't have `e` yet.</p>
@@ -250,10 +250,10 @@
              and whether to make a test build or a release build.
              And it sets up reasonable defaults for build-time environment variables.</p>
           <p>Like I say, `e` tries to "just work", but to give you a sense of what
-             I mean by the environment variables:
-             You can look at the environment variables it injects by running <code>e show env</code>.</>
+             I mean by the environment variables,
+             You can look what it injects by running <code>e show env</code>.</>
           <p>Here you see the git caching that I mentioned earlier,
-             and these sccache variables are for what I said earlier about trying to reuse precompiled pieces from Electron's CI.</p>
+             and sccache here is how we try to speed up your build by reusing pieces from Electron's CI.</p>
              And <code>e show current --filename</code> tells you where your project file lives,
              so you can edit it by hand if you really need to.</p>
           <p><code>sync</code> synchronizes the source code.
@@ -267,7 +267,7 @@
              <code>make</code> makes it and <code>run</code> runs it.</p>
           <p>Lastly, you can combine init, sync, and make all together by calling
              init with the option <code>--bootstrap</code>.
-             This is your one-liner to get from zero to an Electron executable.</p>
+             This one-liner will get you an Electron executable from scratch.</p>
           <p><b>VIDEO ctrl-2 for bootstrap</b></p>
           <p>Let's see what that looks like.</p>
           <p>I'm going to run <code>e init</code>... oh actually let's time it to see how long it takes...
@@ -277,9 +277,8 @@
              I'll name the project file the same as the directory name,
              and I'll bootstrap it.
           <p>So now it's going to pull in and compile those sixty million lines of code that I mentioned.
-             And that's about as fast as it sounds.
-             Like I said, e does try to reuse precompiled pieces from our CI
-             and it does do git caching so that followup calls to <code>e sync</code> are faster,
+             And that's about as slow as it sounds.
+             Like I said, e tries to make things better with caching and distributed build pieces,
              but still.
              the first time is pretty harsh.
              There's a reason anandtech has a hardware benchmark that just lists Chromium build times.</p>
@@ -330,8 +329,8 @@
             <p>Oh! And if you're following along, try going to cs.chromium.org,
                then opt into the new layout, and click on <code>chromium/src</code>.
                You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
-               And since Chromium's size makes it difficult to code search it in an IDE,
-               cs.chromium can be very useful.</p>
+               Chromium's size makes it difficult to search inside an IDE,
+               so cs.chromium is your friend.</p>
             <ul>
               <li>The first module you should know about is <code>base</code>.
                   These are general purpose tools that anyone else can use.
