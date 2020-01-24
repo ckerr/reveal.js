@@ -297,16 +297,17 @@
           <p>And when we do that, we get a directory full of who-knows-what.
             android? chromeos? Electron doesn't run on those; what is all this stuff?</p>
           <p>Here's what's going on:
-             Out of those 60 million lines of code I mentioned, Electron is only about 70 thousand.
+             Out of those 60 million lines I mentioned, Electron is only about 70 thousand.
              Less than a tenth of one percent.
              Even Node, with <b>all</b> its dependencies included, is only about 5 million lines.
-             Everything else is Chromium or its deps.</p>
-          <p>There's just a lot fewer headaches for us when we use Chromium's directory layout and build structure.
+             Everything else is Chromium. Or its deps.</p>
+          <p>Doing thing the Chromium Way has a lot of inertia, life is just
+             easier when we use its directory layout and its build structure.
              So what you see here is more or less what you see when building Chromium.
              The one thing that's different is this electron folder here.
              That's where our one tenth of one percent is.
              We'll look at that in a minute,
-             But electron's code will make a little more sense if we run through some Chromium highlights real quick.</p>
+             But that code will make a little more sense if we run through some Chromium highlights real quick.</p>
           </aside>
         </section>
 
@@ -337,8 +338,9 @@
                   this is where you'll find your string tokenizers,
                   command-line parsers, logging utils, C++ polyfills, and so on.</li>
 
-              This is the best starting point if you want to start getting familiar with the C++ code,
-              since it's well-written, it's all self-contained,
+              If you want to get familiar with the C++ code, this is the single best starting point.
+              It's well-written,
+              it's all self-contained,
               and Electron uses it everywhere.
 
               <li>gin: which is convenience utilities for the javascript engine named v8. 
