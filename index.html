@@ -71,7 +71,7 @@
           FIXME: add my name and contact
 
           <aside class="notes">
-            <p>Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft.</p>
+            <p>Hi, I'm Charles Kerr. I'm part of the Electron team at Microsoft. There, I'm one of the Electron maintainers.</p>
             <p>And today I'm going to talk about why you should get involved with Electron's development.</p>
           </aside>
         </section>
@@ -116,9 +116,9 @@
           <aside class="notes">
             <p>So, why get involved?</p>
             <p><b>FRAGMENT (show tux)</b></p>
-            <p>First, maybe you're a developer who doesn't use Windows.</p>
+            <p>First, maybe you're a developer who uses more than one desktop OS and you like a world with apps that run on all of them.</p>
             <p>Would all the Electron apps that you use still exist
-               if the people who made them had to write and test three separate native apps?</p>
+               if the people who made them had to write and test three separate native versions?</p>
 
             <p><b>FRAGMENT (show lightbulb)</b></p>
             <p>Maybe you want to put your skills to use and also learn new skills.
@@ -223,7 +223,8 @@
              <ul>
                <li>It fetches depot-tools and keeps it up-to-date,</li>
                <li>it has sensible defaults for git caching,</li>
-               <li>by default it tries to speed up your build by seeing if it can reuse precompiled pieces made by our CI.</p>
+               <li>by default it tries to speed up your build by seeing if it can reuse precompiled pieces made by our CI.</li>
+               <li>While doing all this, it tries to "Just work" out-of-the-box,</li>
                <li>and it does other helpful things. We'll see some them later in this talk.</li>
              </ul>
              So, electron's build-tools is what I recommend.
@@ -231,32 +232,38 @@
 
           <p>We're planning to make build-tools an npm package.
              For today, though, installing build-tools is still
-             pretty straightforward:</p>
+             pretty straightforward.</p>
+          <p>Let me open a terminal here and I'll show you.</p>
           <p><b>LIVE CODING ctrl-1 to install build tools</b></p>
           <p>As you can see, I don't have `e` yet.</p>
           <p>I am going to put it in my `electron` directory.
-             That's not hardcoded in the scripts; you can put it anywhere you like.</p>
-          <p>If you've used npm apps, you've probably done this step a hundred times:
+             That's path isn't required by any scripts; you can put it anywhere you like.</p>
+          <p>If you've used npm apps, you've probably done this before:
              clone the repo from GitHub, cd into it, and npm install.</p>
           <p>Then I add the src directory to my path, and now my command line sees <code>e</code>.</p>
           <p>That's the easy part!</p>
           <p><b>VIDEO ENDS ctrl-0 and show e options</b></p>
           <p>So, let's see what we can do with `e`.
-             Generally, you'll run these first four commands in order:</p>
+            When you're starting out,
+            these first four commands are likely to be the first four you'll use:</p>
           <p><code>e init</code> creates a new project file.
              which remembers where you told it to keep the source code,
              and whether to make a test build or a release build.
              And it sets up reasonable defaults for build-time environment variables.</p>
-          <p>You don't have to remember these specifics, but just to show you:
-             You can look at the environment variables it injects by running <code>e show env</code>.
+          <p>Like I say, `e` tries to "just work", but to give you a sense of what
+             I mean by the environment variables:
+             You can look at the environment variables it injects by running <code>e show env</code>.</>
+          <p>Here you see the git caching that I mentioned earlier,
+             and these sccache variables are for what I said earlier about trying to reuse precompiled pieces from Electron's CI.</p>
              And <code>e show current --filename</code> tells you where your project file lives,
              so you can edit it by hand if you really need to.</p>
-          <p><code>sync</code> does what it says on the tin: gets or updates the source.
-             You need to do this after creating your project file to get source for the first time.
-             You'll also want to do it after checking out a different electron branch
-             to ensure all the dependencies are resynced to what the new branch needs.
-             For example if you check out an older version of Electron,
-             it will want to use older versions of Chromium and Node.</p>
+          <p><code>sync</code> synchronizes the source code.
+             If you haven't checked out the code yet -- such as after running `e init` for the first time -- this will fetch it.
+             If you've already checked it out before, this will bring it up-to-date.
+             So for example you'll want to sync after checking out a different electron branch
+             to ensure its dependencies match.
+             Say you've checked out an older version of Electron --
+             that older Electron code wants to compile with use older versions of Chromium and Node.</p>
           <p>The next two are even more straightforward:
              <code>make</code> makes it and <code>run</code> runs it.</p>
           <p>Lastly, you can combine init, sync, and make all together by calling
@@ -271,36 +278,36 @@
              I'll name the project file the same as the directory name,
              and I'll bootstrap it.
           <p>So now it's going to pull in and compile those sixty million lines of code that I mentioned.
-             The first time around, this does not run quickly.
-             Like I said, it does try to reuse precompiled pieces from our CI
-             and we use caching to make followup <code>e sync</code> calls faster,
+             And that's about as fast as it sounds.
+             Like I said, e does try to reuse precompiled pieces from our CI
+             and it does do git caching so that followup calls to <code>e sync</code> are faster,
              but still.
-             There's a reason anandtech has a hardware benchmark that just lists Chromium build times.
-             This is not fast.</p>
+             the first time is pretty harsh.
+             There's a reason anandtech has a hardware benchmark that just lists Chromium build times.</p>
           <p>In fact, let's just speed up time a bit here...</p>
-          <p>If you read all that you can see it took 24 minutes to download the source</p>
+          <p>OK. That 'finished' line there means it ook 24 minutes to download the source.</p>
           <p>And there are 33 thousand pieces to build.</p>
           <p>Let's speed up time again...</p>
           <p>And you can see the bootstrap took about 2200 seconds, about 36 minutes.</p>
           <p>So, hooray! With a bit of patience, or the ability to speed up time, you too can build Electron!</p>
           <p>And because we've done that here, that means we now have code to look at!</p>
           <p>We'll go to the root directory that we specified in <code>e init</code>.</p>
-          <p>You can use <code>e show</code></p> to query this stuff after the fact.</p>
+          <p>And by the way, you can use <code>e show</code></p> to ask the current project file for this information, which is handy if you've got a lot of project files or if you're writing shell script helpers to get around.</p>
           <p>For example <code>e show current</code> confirms what we already knew, that covalence-bug is the active project file. And <code>e show root</code> shows what directory we told <code>e init</code> to use.</p>
           <p>So that means you can do something like <code>cd $(e show root)</code></p>
           <p>And when we do that, we get a directory full of who-knows-what.
-            android? chromeos? Electron doesn't run on those; what are these doing here?</p>
+            android? chromeos? Electron doesn't run on those; what is all this stuff?</p>
           <p>Here's what's going on:
-             Out of those 60 million I mentioned, Electron is only about 70 thousand.
+             Out of those 60 million lines of code I mentioned, Electron is only about 70 thousand.
              Less than a tenth of one percent.
-             Node, with <b>all</b> its dependencies included, is only about 5 million lines.
+             Even Node, with <b>all</b> its dependencies included, is only about 5 million lines.
              Everything else is Chromium or its deps.</p>
           <p>There's just a lot fewer headaches for us when we use Chromium's directory layout and build structure.
              So what you see here is more or less what you see when building Chromium.
              The one thing that's different is this electron folder here.
-             That's where our code is.
+             That's where our one tenth of one percent is.
              We'll look at that in a minute,
-             But electron's code will make a little more sense if we run through some Chromium highlights first.</p>
+             But electron's code will make a little more sense if we run through some Chromium highlights real quick.</p>
           </aside>
         </section>
 
@@ -318,20 +325,20 @@
             <li class="fragment"><span class="filename">services/</span> <span class="secondary_text">cross-platform management of services</span></li>
           </ul>
           <aside class="notes">
-            <p>So I want to show you a quick summary of the Chromium Modules that
-               Electron includes the most.</p>
+            <p>These are the Chromium Modules that Electron includes the most.</p>
+            <p>And I mean 'include' in the C++ sense, which is vaguely like JavaScript's require or import.</p>
             <p>Oh! And if you're following along, try going to cs.chromium.org,
                then opt into the new layout, and click on <code>chromium/src</code>.
                You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
                And since Chromium's size makes it difficult to code search it in an IDE,
-               this search page can be very useful.</p>
+               cs.chromium can be very useful.</p>
             <ul>
               <li>The first module you should know about is <code>base</code>.
                   These are general purpose tools that anyone else can use.
                   this is where you'll find your string tokenizers,
                   command-line parsers, logging utils, C++ polyfills, and so on.</li>
 
-              This is a really good starting point if you want to read some code,
+              This is the best starting point if you want to start getting familiar with the C++ code,
               since it's well-written, it's all self-contained,
               and Electron uses it everywhere.
 
@@ -365,10 +372,8 @@
                   and someone like Chromium can come along and build a full web browser around it,
                   or someone like Electron can come along and build Electron around it.
                   Content has a public API of classes, and also a reference implementation
-                  named "content shell" that is a browser which renders pages on all platforms.
-                  If you're embedding Chromium in an application, this is where you'd start.
-                  To a Chromium developer, Electron probably just looks like a client of the
-                  content module.
+                  named "content shell" which renders pages on all platforms.
+                  If you're embedding Chromium in an application, content is where you'd start --
                   so let's come back to this module in the next slide.</li>
 
               <li>components: this is where you'll find most of those 
