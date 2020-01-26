@@ -6,7 +6,7 @@
 
     <title>Electron Hacking for Beginners</title>
 
-    <meta name="description" content="A gentle introduction to becoming productive in a very large codebase">
+    <meta name="description" content="A gentle introduction to a very large codebase">
     <meta name="author" content="Charles Kerr">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,6 +16,30 @@
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/night.css" id="theme">
+    <style>
+      .secondary_text {
+        font-size: smaller;
+        font-style: italic;
+        filter: brightness(66%);
+      }
+      .reveal section .why_image {
+        background-color: transparent;
+        border: none;
+        height: 200px;
+        width: 150px;
+      }
+      .filename {
+        font: courier;
+        font-size: 0.8em;
+        color: lime;
+        background-color: #222;
+        word-break: keep-all;
+      }
+      .url {
+        color: #0f0;
+        text-decoration: underline;
+      }
+    </style>
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
@@ -40,654 +64,532 @@
 
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-        <section data-markdown data-separator-notes="XXX" id="title-page">
-          ## Electron Hacking for Beginners
-          #### A gentle introduction to becoming productive in a very large codebase
-
-          XXX
-          Hi, I'm Charles Kerr. I haven't presented before, so a few sentences about me: I've worked for about a year on Electron for GitHub.
-
-          Before that I worked for about five years on Ubuntu Linux,
-
-          and before that I wrote most of the BitTorrent app named Transmission.
-
-          So I've done open source for awhile now.
-
-          And I came to Electron because I wanted to keep doing it,
-
-          and because Electron is a Good Thing for getting more desktop apps on Mac and Linux,
-
-          and because the calendar said 2017 and it was way past time for me to learn web tech.
+        <section id="title-page">
+          <h2>Electron Hacking for Beginners</h2>
+          <p>A gentle introduction to a very large codebase</p>
+          <p>&nbsp;</p>
+          <p>Charles Kerr</p>
+          <aside class="notes">
+            <p>Hi, I'm Charles Kerr. I'm one of the Electron maintainers.</p>
+            <p>And today I'm going to talk about why you should get involved with Electron's development, too.</p>
+          </aside>
         </section>
 
-        <section id="intent">
-          <p>Electron's developer community is high-quality,<br/>but small</p>
-          <p>&nbsp;</p>
-          <p>This walkthrough shows how get started on Electron and why it's not as scary as you think.</p>
-          <p>&nbsp;</p>
-          <p class="fragment" style=font-size:smaller">1. The Tools <i>(getting the code)</i></p>
-          <p class="fragment" style=font-size:smaller">2. The Code <i>(building & understanding the code)</i></p>
-          <p class="fragment" style=font-size:smaller">3. Putting it into Practice <i>(fixing the code)</i></p>
+        <section id="topics">
+          <h3>Getting Involved!</h3>
+          <ol>
+            <li>Why?</li>
+            <li>How?
+              <ul>
+                <li>Getting the code</li>
+                <li>Building the code</li>
+                <li>Understanding the code</li>
+              </ul>
+            </li>
+            <li>Live coding demo</li>
+          </ol>
+
           <aside class="notes">
-          <p>The Electron team's got a neat dynamic: we're a small team, but even
-             then we're spread out among a lot of companies, like GitHub, Slack,
-             Microsoft, and Atlassian. And this not how corporate teams usually work
-             but it works for us and the PRs come in every day.</p>
+          <p>So we'll go over why you would want to do that,</p>
+          <p>how to do that,</p>
+          <p> -- including the mechanics of getting and building the code, and importantly, finding your way around the code --</p>
+          <p>and we'll put these ideas into action with a coding example.</p>
+          <p>This talk will take about half an hour and, while it is about coding --
+             there are lots of other ways to get involved.</p>
+          <ul>
+            <li>If you're bilingual, there is a project to translate our documentation.</li>
+            <li>If you're involved with QA, we have a group of QA people from other Electron apps
+               and you can come and learn from each other.</li>
+            <li>If you have an app with a beta channel and you want to help us find bugs in
+               Electron's betas, come talk to us.</li>
+          </ul>
+          </aside>
+        </section>
 
-          <p>But we don't get as many PRs from the community as you'd expect for an
-             open source tool whose primary users are developers.</p>
+        <section id="why-get-involved">
+          <h3>Why Get Involved?</h3>
+          <div style="display: grid; grid-template-columns: 3fr 1fr 1fr 1fr 1fr; grid-column-gap: 0.5em">
+            <div class="fragment"><img class="why_image" src="assets/tux.png"> <img class="why_image" src="assets/mac-os.png"></div>
+            <div class="fragment"><img class="why_image" src="assets/Light-bulb-icon.png"/></div>
+            <div class="fragment"><img class="why_image" src="assets/bag-of-money.png"/></div>
+            <div class="fragment"><img class="why_image" style="height: 150px; padding-top: 33px" src="assets/happy.png"/></div>
+            <div class="fragment"><img class="why_image" src="assets/infinity-gauntlet.png"/></div>
+          </div>
+          <aside class="notes">
+            <p>So, why get involved?</p>
+            <p><b>FRAGMENT (show tux)</b></p>
+            <p>First, maybe you're a developer who uses more than one desktop. Maybe you like it when the apps you use run on all of them.</p>
+            <p>Not many companies write native apps for Linux, Mac, and Windows.</p>
 
-          <p>I think Electron's got a reputation that its internals are <i>too</i> big and <i>too</i> scary.
-             This presentation is to push back on that a little and encourage you to dive in.
-             I'll do this in three parts:</p>
+            <p><b>FRAGMENT (show lightbulb)</b></p>
+            <p>Maybe you want to put your skills to use while also learning new ones.
+               Electron uses a <em>lot</em> of languages and tools.
+               <ol>
+                 <li>JavaScript</li>
+                 <li>TypeScript</li>
+                 <li>C++</li>
+                 <li>Python</li>
+                 <li>Objective C.</li>
+                 <li>We use Mac APIs</li>
+                 <li>Windows APIs</li>
+                 <li>we use posix, GTK+, and dbus on Linux</li>
+                 <li>our tests use chai</li>
+                 <li>our CI uses docker</li>
+                 <li>...and so many more. I literally could not name them all.</li>
+               </ol></p>
+            <p>And maybe that sounds overwhelming;
+               but if you get just one thing from this talk, I want you to understand
+               that <b>you can</b> do good things on Electron even if you only know one of those skills.
+               <em>Nobody</em> understands the whole list, so you're in good company.</p>
+            <p>Electron's code is big and isn't always easy, but it often it is.
+               <b>You can</b> do good things on Electron even if you are just starting out.</p>
 
-          <p><b>fragment</b> The tools. Building Electron takes a few tools you've used and a few weird ones you haven't, unless you're paid write web browsers.</p>
+            <p><b>FRAGMENT (show bag of money)</b></p>
+            <p>Maybe you're looking for better-paying work.</p>
+            <p>There are a <b>lot</b> of apps shipping on Electron, but when an Application hits some weird issue,
+               there aren't that many people who know how to dig into Electron's source and fix it.</p>
+            <p>Electron will be better off when more people have these skills --
+               and those new skilled people will probably be better of too.</p>
+            <p>I heard the manager of one Electron app say that
+               another team could take their Electron person
+               over that manager's dead body.</p>
 
-          <p><b>fragment</b> The code. Yes, the codebase is big. Really big. You won't believe how mind-bogglingly big it is. But I'll explain why that's OK and why you might understand more of it than you expect.</p>
+            <p><b>FRAGMENT (show smiley)</b></p>
+            <p>Related to the last two, maybe you're looking for more <em>interesting</em> work.</p>
+            <p>That long list of skills sounds scary if you think you have to know it all before starting.</p>
+            <p>But if it's a list of things where you can pick and choose what to learn? That's kind of appealing!</p>
 
-          <p><b>fragment</b> Lastly, putting it into practice. We'll walk through a real Electron bug that was reported about a month ago and fix it.</p>
+            <p><b>FRAGMENT (infinity gauntlet)</b></p>
+            <p>Lastly, power and influence.</p>
+            <p>Electron is a community-based project. We've got a governance structure,
+               a code of conduct, maintainers around the world -- but full time,
+               there's only about a dozen of us.</p>
+            <p>Anyone in this room, if they wanted to invest the time,
+               can go from having no say to having a very prominent say.</p>
+            <p>As long as it's not to the detriment of others, we're very flexible</p>
 
           </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="part-1-the-tools">
-          #### Part 1 of 3
-          ## The Tools
-
-          XXX
-          And all this should run about 20-25 minutes.
-
-          Okay so let's start with the tools.
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="os-specific-prerequisites">
-          ### OS-specific prerequisites
-
-          Instructions at [electronjs.org/docs/](https://electronjs.org/docs/development/build-instructions-gn)
-
-          Chances are you've heard of or used these tools.
-
-          * Ex: installing Python 2.7 on macOS with `brew`
-          * Ex: installing [Node.js](https://nodejs.org/)
-
-          XXX
-          There are platform-specific tools you need to install first.
-
-          These are documented at electronjs.org/docs and I'm going to skip past them because most developers have already used or heard of these and so ... they're not scary.
-
-          For example if you're attending an Electron meetup, you've probably installed Node
-
-          And if you're attending an Electron meetup and have a Mac, and you've probably installed something using homebrew.
-
-          So moving right along...
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="code-what-code">
-          #### What code is in Electron?
-
-          Electron is Chromium + Node.js + native OS bits.
-
-
-          #### Where does it go?
-
-          It's all statically linked.
-
-
-          ##### We build the whole world?
-
-          Mosly, yes.
-
-          XXX
-          When we're building Electron, what do we build?
-
-          So, everything Chromium needs, everything Node needs.
-
-          If you run `ldd electron` on Linux to see what shared libraries, what DLLs, it's using, there's not a lot: you get libffmpeg, GTK+ (the GUI library Chromium uses on Linux) and its dependencies. And that's about it. Like Chromium, for the most part if we need it, we compile it in.
-
-          * For example Skia, the 2D graphics library used for rendering, is statically linked in.
-
-          * Media libraries, like libwebm.
-
-          * Node, libuv, v8...
-
-          It's all compiled together.
-          And there's upside to that,
-          such as making sure Chromium and Node are built with compatible build flags
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="sloccount-all">
-          ### So that's a lot of code?
-
-          ```sh
-          ~/electron/electron-gn/src$ sloccount *
-          cpp:         20,007,861 (56.57%)
-          ansic:        5,624,929 (15.90%)
-          javascript:   4,638,763 (13.11%)
-          python:       1,720,845  (4.87%)
-          Total Physical Source Lines of Code (SLOC)                = 35,370,460
-          ```
-
-          **Yes.**
-          XXX
-          So... yeah. That doesn't come for free.
-
-          By the way, that counting tool removes duplicate files from the count.
-
-          So tools, config, and boilerplate got copied into multiple repos, none of those is part of that number.
-
-          Imagine how many repos you have to clone for that.
-
-          Imagine even tracking the dependencies to know what repos you'd need.
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="chromium-tools">
-          Chromium's Code Management Tools
-
-          1. [Depot Tools](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools.html): scripts that manage interaction with the Chromium source code repository.
-
-          1. GClient _(part of depot tools)_: A meta-checkout tool. Works on Linux, OS X, and Windows.
-
-          1. [GN](//gn.googlesource.com/gn/+/master/docs/): A meta-build system that generates build files for [Ninja](https://ninja-build.org/).
-
-          XXX
-          Fortunately a lot of people work on Chromium, and a lot of them are smart.
-
-          They've already wrestled with this. They wrote their
-          own meta-build system called GYP, "generate your projects".
-
-          Then they decided they could do better and wrote a second meta-build
-          system to replace it: GN, "generate ninja".
-          (Ninja is a build system kinda like `make` but faster.)
-
-          So... we use the same tools: depot-tools (especially gclient) and GN.
-
-          Jeremy Althorp at Slack and John Kleinschmidt at GitHub did some
-          heroic work earlier this year migrating us from GYP to GN.
-
-        </section>
-        <section data-markdown data-separator-notes="XXX" id="removing-gyp" data-background-video="assets/removing-gyp.webm" data-background-color="#000000">
-          XXX
-          And a good time was had by all.
-
-          but we survived,
-
-          And yes, GN is better.
-
-          Okay, so you install depot-tools.
-          
-          This is is easy on macOS and Linux: clone it and add it to your PATH...
-        </section>
-
-        <section id="the-process">
-          <p><small>Part 2 of 3</small></p>
-          <h2>The Code</h2>
-
+        <section id="code-what-code">
+          <h4>What code do I need?</h4>
+          Electron, Node, and Chromium
+          <p class="fragment" sytle="font-size: 0.9em">...and Node's dependencies, like brotli, http_parser, llhttp, nghttp2, v8, zlib </p>
+          <p class="fragment" style="font-size: 0.8em">...and Chromium's dependencies, like Skia, Views, fido, mojo, libdbus, libaccessability, libpdf, libprotocol, ppapi, libnetwork_service, libgl_wrapper, libbluetooth</class></p>
+          <p class="fragment" style="font-size: 0.6em">...and the dependencies' dependencies, like angle, blink, boringssl, breakpad, brotli, cacheinvalidation, ced, cld_3, crashpad, dav1d, dom_distiller, fontconfig, hunspell, iccjpeg, libsecret, srtp, vpx, webm, webp, libxml2, libxslt, libyuv, liblzma, libmodp_b64, openh264, opus, perfetto, pffft, protobuf, re2, sfntly, smhasher, snappy, sqlite, swiftshader, unrar, webrtc, yasm, zlib</p>
           <aside class="notes">
-          <p>...there are a of hoops to jump through on Windows because...  Windows. It's not hard and it's all in the build docs at electronjs.org for when you go home and try this on your own later.</p>
-          <p>So now you have the code-fetching tools. Let's fetch some code.</p>
+            <p>Alright, so if any of that sounded interesting,
+               the next thing to do is get the code.</p>
+
+            <p>So, what do you need to get? Well as you know, Electron is Node plus Chromium plus features.</p>
+
+            <p>And we compile all their sources to ensure everything's compatible.
+               For example,
+               everything needs to have the same compiler flags.
+               And we also need to ensure that Chromium and Node use the same version of the javascript engine named V8.</p>
+
+            <p><b>fragment</b>
+            Oh yeah, v8. Node has some dependencies, and we need to build those too.</p>
+
+            <p><b>fragment</b>
+            And so does Chromium</p>
+
+            <p><b>fragment</b>
+            Oh, and Chromium's dependencies have dependencies.
+            When you add everything up, it's about 60 million LOC.
+            </p>
           </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="gclient-running">
-          Enable caching:
-          ```sh
-          $ export GIT_CACHE_PATH="${HOME}/.git_cache"
-          $ mkdir -p "${GIT_CACHE_PATH}"
-          ```
+        <section id="introducing-electron-build-tools">
+          <p style="color: #f00; text-decoration: line-through;">$ brew install</p>
+          <p style="color: #f00; text-decoration: line-through;">$ npm install</p>
+          <p style="color: #f00; text-decoration: line-through;">$ sudo apt install</p>
+          <p class="url">https://github.com/electron/build-tools</p>
+          <aside class="notes">
+          And for added fun, you can't just install them.
+          Chromium's dependencies aren't specified by their version numbers; they use specific commit hashes.
+          And Chromium has custom patches for its dependencies --
+          so those have to be applied before building.
+          Node patches V8, too.
+          And Electron patches both Node <em>and</em> Chromium.
 
-          Get the code:
-          ```sh
-          $ mkdir electron-gn && cd electron-gn
-          $ gclient config \
-               --name "src/electron" \
-               --unmanaged \
-               https://github.com/electron/electron
-          $ gclient sync --with_branch_heads --with_tags
-          # This will take a while, go get a coffee.
-          ```
-          XXX
-          The important thing here is you want to make sure you have a cache enabled.
+          <p>Chromium has a project named depot-tools to wrangle all this.
+            and Electron's documentation shows how to do that manually.</p>
 
-          The next slides will show you why, and the way you enable it is easy: you create a cache directory and you set the environment variable `GIT_CACHE_PATH` to it.
+          <p>But Sam and Shelly and I recently wrote "electron build-tools",
+             Which includes a command-line tool named "e" to handle all the minutia for you.
+             <ul>
+               <li>It fetches depot-tools and keeps it up-to-date,</li>
+               <li>it has sensible defaults for git caching,</li>
+               <li>it tries to speed up your build by seeing if it can reuse precompiled pieces from our CI.</li>
+               <li>and it does some other helpful things which we'll see later in this talk.</li>
+             </ul>
+             So, electron's build-tools is what I recommend.
+          </p>
 
-          Once you have that, you run `gclient config` for first-time setup
-
-          and `gclient sync` any time after that when you want to refresh your files, it's like a meta `git pull` with bells and whistles 
-
-        </section>
-        
-        <section data-markdown data-separator-notes="XXX" data-element-attributes="{_\s*?([^}]+?)}" id="gclient-outcome-time">
-          **GClient Cost (Time)**
-
-          First-time run (no cache):
-
-          ```sh
-          $ TIME="%e seconds" /usr/bin/time gclient sync \
-            --with_branch_heads --with_tags --delete_unversioned_trees
-          ...
-          1218.00 seconds # 20 minutes, 18 seconds
-          ```
-
-          With a populated cache:
-
-          ```sh
-          $ TIME="%e seconds" /usr/bin/time gclient sync \
-            --with_branch_heads --with_tags --delete_unversioned_trees
-          ...
-          250.00 seconds # 4 minutes, 10 seconds
-          ```
-
-          XXX
-          This slide isn't a huge surprise,
-
-          As you'd expect for 35 million lines, the first run is quite expensive. That 20 min was with a good internet connection.
-
-          but once you have the cache, resyncing is pretty cheap.
-
-          Most of that four minutes is spent in hooks, for example re-applying Electron's Chromium patches.
-
-          And how big is that cache?
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="gclient-outcome-space">
-          **GClient Cost (Space)**
-          ```sh
-          $ du -sh ~/.electron-cache/git-cache
-          16G
-          ```
-
-          XXX
-          So when I said "imagine how many repos you have to clone" earlier..
-
-          There's your answer:
-
-          16 GB worth.
-
-          But you Node programmers shouldn't act like this is so strange:
-
-          My first exposure to Node was on Electron. This slide is kind of how I felt when I ran `npm install` for the first time...
-
-          Like this npm package here:
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" data-background="assets/sindresorhus.png">
-          XXX
-          one thousand dependencies.
-
-          And that's just too round a number to be right. Maybe there are more but the people writing the website never thought it would hit four digits and it just tops out.
-
-          (beat)
-
-          What I love about this repo is six people downloaded it this week.
-
-          WHO ARE THESE SIX PEOPLE??
-
-          Whoever you are... 
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" data-background="assets/careers.png">
-          XXX
-          maybe you're the kind of person who would have a fun Monday morning getting paid to bootstrap Electron!
-
-          I hoped that would get a laugh. I put this in because we've got four stats-heavy slides coming up and I wanted to keep it light.
-
-          That 35 million LOC number is not light. That's a scary number.
-
-          But that counts Chromium's tests, its dependencies' tests, and a lot of pieces like `chromecast/` and `chrome_os/` that I hope we don't use
-
-          So here's here's a more realistic, though arbitrary, count of the Chromium modules that Electron touches directly.
+          <p>We're going to make it an npm package.
+             For today, though, installing it is still pretty easy:</p>
+          <p>Let me open a terminal here and I'll show you.</p>
+          <p><b>LIVE CODING ctrl-1 to install build tools</b></p>
+          <p>As you can see, I don't have `e` yet.</p>
+          <p>I am going to put it in my `electron` directory.
+             That's path isn't required by any scripts; you can put it anywhere you like.</p>
+          <p>If you've used npm apps, you've probably done this before:
+             clone the repo from GitHub, cd into it, and npm install.</p>
+          <p>Then I add the src directory to my path, and now my command line sees <code>e</code>.</p>
+          <p><b>VIDEO ENDS ctrl-0 and show e options</b></p>
+          <p>Great! So, let's see what it can do.
+            When you're starting out,
+            these first four commands are likely to be the first four you'll use:</p>
+          <p><code>e init</code> creates a new project file.
+             That file remembers where you wanted the source code to be kept,
+             and whether to make a test build or a release build.
+             And it sets up reasonable defaults for build-time environment variables.</p>
+          <p>And these environment variables -- Like I say, `e` tries to "just work",
+             so you probably won't be changing these, but just to show you what I'm talking
+             about -- you can see what gets injected by running <code>e show env</code>.</>
+          <p>Here you see the git caching that I mentioned earlier,
+             and sccache here is how we try to speed up your build by reusing pieces from Electron's CI.</p>
+             And <code>e show current --filename</code> tells you where your project file lives,
+             so you can edit it by hand if you really need to.</p>
+          <p><code>sync</code> synchronizes the source code.
+             If you haven't checked out the code yet -- such as after running `e init` for the first time -- this will fetch it.
+             If you've already checked it out before, this will bring it up-to-date.
+             So for example you'll want to sync after checking out a different electron branch
+             to make sure the dependencies match.
+             Say you've checked out an older version of Electron --
+             that older Electron code wants to compile with older versions of Chromium and Node.</p>
+          <p>The next two are even more straightforward:
+             <code>make</code> makes it and <code>run</code> runs it.</p>
+          <p>Lastly, you can combine init, sync, and make all together by calling
+             init with the <code>--bootstrap</code> parameter.
+             This one-liner will get you an Electron executable from scratch.</p>
+          <p><b>VIDEO ctrl-2 for bootstrap</b></p>
+          <p>Let's see what that looks like.</p>
+          <p>I'm going to run <code>e init</code>... oh actually let's time it to see how long it takes...
+             Since we're going to fix a bug in our coding example,
+             I'll keep the source in a directory named covalence-bug,
+             this will be a testing build,
+             I'll name the project file the same as the directory name,
+             and I'll bootstrap it.
+          <p>So now it's going to pull in and compile those sixty million lines of code.
+             no matter how much e tries to soften the blow with caching,
+             the first time around it's gonna suck.</p>
+          <p>In fact, let's just speed up time a bit here...</p>
+          <p>OK. That 'finished' line there at the bottom means it took 24 minutes to download the source.</p>
+          <p>And there are 33 thousand pieces to build.</p>
+          <p>Let's speed up time again...</p>
+          <p>And you can see the bootstrap took about 2200 seconds, about 36 minutes.</p>
+          <p>So, hooray! With a bit of patience, or the ability to speed up time, you too can build Electron!</p>
+          <p>And because we've done that here, that means we now have code to look at!</p>
+          <p>We'll go to the root directory that we specified in <code>e init</code>.</p>
+          <p>And by the way, you can use <code>e show</code></p> to ask the current project file for this information, which is handy if you've got a lot of project files or if you're writing shell script helpers to get around.</p>
+          <p>For example <code>e show current</code> confirms what we already knew, that covalence-bug is the active project file. And <code>e show root</code> shows what directory we told <code>e init</code> to use.</p>
+          <p>So that means you can do something like <code>cd $(e show root)</code></p>
+          <p>And when we do that, we get a directory full of who-knows-what.
+            android? chromeos? Electron doesn't run on those; what is all this stuff?</p>
+          <p>Here's what's going on:
+             Out of all those 60 million lines, Electron is only about 70 thousand.
+             Less than a tenth of one percent.
+             Even Node, with <b>all</b> its dependencies included, is only about 5 million lines.
+             Everything else is Chromium. Or its deps.</p>
+          <p>Doing thing the Chromium Way has a lot of inertia, life is just
+             easier when we use its directory layout and its build structure.
+             So what you see here is more or less what you see when building Chromium.
+             The one thing that's different is this electron folder here.
+             That's where our one tenth of one percent is.
+             We'll look at that in a minute,
+             But that code will make a little more sense if we run through some Chromium highlights real quick.</p>
+          </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="sloccount-more-relevant">
-          Chromium code more relevant to Electron
-
-          ```sh
-          $ rg --no-filename "^#include \"" | grep -v -e atom -e electron \
-             | perl -pe "s/\"(\w*?)\/(?:.*)\"/\$1/" \
-             | grep -v -e "\.h\"" | sort | uniq -c | sort -nr | head -n8
-           878 #include base
-           430 #include content
-           340 #include ui
-           202 #include native_mate
-           184 #include net
-           113 #include third_party
-            80 #include chrome
-            75 #include components
-          $ sloccount base content ui electron/native_mate \
-            net third_party/skia third_party/blink chrome/browser/ui \
-            components/prefs services v8 | grep "Total Physical"
-          Total Physical Source Lines of Code (SLOC) = 6,619,444
-          ```
-
-          XXX
-          So now we're down to only 6 million lines of code.
-
-          Not so scary now, right? 
-
-          That's a cognitive bias technique called anchoring. 6 million lines of code is supposed to seem less scary now because at least it's not at 35 million.
- 
-          Well, a little less, anyway.
-
-          And, because some of you are wondering:
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="sloccount-electron">
-          **Electron codebase**
-
-          ```sh 
-          ~/electron/electron-gn/src/electron$ sloccount \
-            atom lib spec script patches
-          Total Physical Source Lines of Code (SLOC)   = 84,072
-          Totals grouped by language (dominant language first):
-          cpp:          52,033 (61.89%)
-          javascript:   28,875 (34.35%)
-          python:        3,059 (3.64%)
-          Total Physical Source Lines of Code (SLOC)   = 84,072
-
-          SLOC  Directory SLOC-by-Language (Sorted)
-          52033 atom      cpp=52033
-          19204 spec      javascript=19099,sh=105
-          7590  lib       javascript=7590
-
-          ```
-
-          XXX
-          Electron itself: about 85 thousand lines.
-
-          Some of you with sharp eyes are looking at the bottom of that and noticing that about 20% of Electron's code is tests.
-
-          The number of open issues in our bug tracker might indicate otherwise, but each PR you submit generates a _lot_ of good CI testing.
-
-          Okay so now you've got the code. What do you do with code?
-        </section>
-        <section data-markdown data-separator-notes="XXX" id="electron-build-caching">
-          Building Electron
-          ```sh
-          $ export SCCACHE_BUCKET="electronjs-sccache"
-          $ export SCCACHE_TWO_TIER=true
-          $ export GN_EXTRA_ARGS="${GN_EXTRA_ARGS} \
-             cc_wrapper=\"/path/to/electron/external_binaries/sccache\""
-          $ gn gen out/Debug --args \
-            "import(\"//electron/build/args/debug.gn\") $GN_EXTRA_ARGS"
-          ```
-
-          XXX
-          One beautiful thing about building Electron is team
-          member Sam atterd at Atlassian submitted a patch to
-          sccache that adds two-tier caching --
-
-          If you use that you never have a completely cold cache,
-
-          because even the on your first run, it will help you by pulling from Electron's CI builds' cache.
-
-          This is what Electron builds look like:
-        </section>
-        <section data-markdown data-separator-notes="XXX" id="tell-me-what-electron-builds-look-like-this-is-what-electron-builds-look-like">
-          ```sh
-          $ TIME="%e seconds" /usr/bin/time \
-            ninja -C $EL_GN_PATH/src/out/debug \
-            electron:electron_app
-          [18098/18098] LINK ./electron
-          398.03 seconds
-          $ du -sh ~/.electron-cache/sccache
-          1.6G	/home/charles/.electron-cache/sccache
-
-          ```
-
-          ```sh
-          $ $EL_GN_PATH/src/electron/external_bins/sccache --stats
-           11164 Compile requests
-           11146 Compile requests executed
-           11142 Cache hits
-               3 Cache misses
-              18 Non-cacheable calls
-           0.005 s Average cache write
-          21.994 s Average cache read miss
-           0.021 s Average cache read hit
-          Cache location
-          Local: Local disk: "/home/charles/.electron-cache/sccache"
-          Remote: S3, bucket: Bucket(name=electronjs-sccache,
-            base_url=http://electronjs-sccache.s3.amazonaws.com/)
-          Cache size 2 GiB
-          Max cache size 10 GiB
-          ```
-          XXX
-          This page has a lot going on.
-
-          1. Yes, that's eighteen thousand and 98 build steps.
-
-          2. compile took 398 seconds -- under 7 minutes. **YES** that was with a
-          hot cache and **YES** it's going to take longer with a Walmart Windows tablet...
-          but without caching on this same machine it would take many hours.
-          Hard to overstate how big a win this is.
-
-          3. the cache has grown again, another couple GB to sccache this time.
-
-          4. you can see at the bottom there, the s3 CI cache is working
-
-          So the scary numbers and stats end on a happy note here.
-
-          Let's take a really quick look at the source.
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="quick-dive-into-electron-code">
-          ### Electron's source code
-          1. `spec/` is the tests
-          1. `script/` is where all the extra tools go, e.g. release notes generator
-          1. `lib/` the public-facing Javascript
-          1. `atom/` is the C++ -- e.g. the Chromium subclasses, delegates and observers.
-
-          XXX
-          In a lot of ways Electron is just another Node app. You know what a `spec/`
-          directory does.
-
-          * `lib/` is the javascript. If we can implement a feature in JS, it goes here.
-            Much of this is the minimum it takes to expose our C++ backend as a public JS API.
-
-          Atom is the next layer, the C++ code between lib and Chromium.
-          And it, in turn, is whatever it takes to expose Chromium to something that can be consumed by the our javascript API.
-
-          For example the largest c++ class in Electron is atom_api_web_contents.
-          Let's take at its header file to see what it's about:
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="the-biggest-class">
-          ** Excerpt from the biggest, scariest class in Electron (atom::api::WebContents)**
-          ```cpp
-            void LoadURL(const GURL& url, const mate::Dictionary& opts);
-            base::string16 GetTitle() const;
-            bool IsLoading() const;
-            void Stop();
-            void ReloadIgnoringCache();
-            void GoBack();
-            void GoForward();
-            bool IsCrashed() const;
-            void SetUserAgent(const std::string& user_agent);
-            std::string GetUserAgent();
-            void InsertCSS(const std::string& css);
-            void OpenDevTools(mate::Arguments* args);
-          ```
-
-          XXX
-          Not completely unexpected, right?
-
-          This <i>is</i> the largest class we've got.
-          And you understand a lot of the ideas here already.
-
-          To be clear: no, I'm not saying Electron is easy.
-          Some of it is, but a lot of it isn't.
-
-          You're probably not going to be refactoring NativeWindow
-          or fixing Sandboxing on Linux on your first day.
-          That comes at around the 8 month mark.
-
-          But if you've written Electron apps,
-
-          if you've used `win.loadURL()` or `win.getTitle()`,
-
-          you already see the big picture, and that can be your guide
-          when you're reading and learning the littler pictures.
-
-          The implementation may be unfamiliar, but `OpenDevTools()` isn't alien. Right?
-        </section>
-
-        <section id="final-thoughts-on-code">
-          <h3>Final thoughts on the codebase</h3>
+        <section data-separator-notes="XXX" id="getting-around-the-chromium-codebase">
+          <p><b>Electron's Most-Included Chromium Modules</b></p>
+          <p style="font-size: 0.6em">See also: <a href="https://cs.chromium.org/" class="url">https://cs.chromium.org/</a>
           <ul>
-          <li class="fragment">You understand more than you think.</li>
-          <li class="fragment">There's even more that you don't understand, but that's OK.</li>
-          <li class="fragment">If you want to step up your C++ game, you could do a lot worse than learning Chromium and Electron.</li>
+            <li class="fragment"><span class="filename">base/</span> <span class="secondary_text">general utils, eg: string tokenizing, logging</span></li>
+            <li class="fragment"><span class="filename">gin/</span> <span class="secondary_text">convenience utilities for the JavaScript engine v8</span></li>
+            <li class="fragment"><span class="filename">blink/</span> <span class="secondary_text">rendering and layout</span></li>
+            <li class="fragment"><span class="filename">ui/gfx/</span> <span class="secondary_text">simple graphics classes</span></li>
+            <li class="fragment"><span class="filename">ui/views/</span> <span class="secondary_text">framework for using native windows</span></li>
+            <li class="fragment"><span class="filename">content/</span> <span class="secondary_text">the core needed for a multi-process sandboxed renderer. (More about this in a moment.)</span></li>
+            <li class="fragment"><span class="filename">components/</span> <span class="secondary_text">components that have <span class="filename">content/</span> as the uppermost layer they depend on (eg. printing)</span></li>
+            <li class="fragment"><span class="filename">services/</span> <span class="secondary_text">cross-platform management of services</span></li>
           </ul>
           <aside class="notes">
-          <p>As said in the last slide, <b>(fragment)</b> you understand more than you think.</p>
-          <p><b>(fragment)</b> When I started contributing to Electron, I'd never touched Node. So for me it was both unfamiliar *and* alien, and I stressed over that a lot.</p>
-          <p>The thing to understand is you've got millions of lines of code -- <b>everyone</b> is lost to some degree.</p>
-          <p>When I realized it's OK to be a <i>little</i> lost, that freed me up to stress about it less and focus and learn faster.</p>
-          <p><b>(fragment)</b> As an aside, Chromium has a lot of solid engineering. [read fragment aloud here] The Chromium directory named `base/` holds general-use tools, mostly self-contained, so it's not a bad place to start. You'll find Chromium's string manipulation, memory management, callback binding, and so on.</p>
+            <p>These are the Chromium Modules that Electron includes the most.</p>
+            <p>And I mean 'include' in the C++ sense, which is vaguely like JavaScript's require or import.</p>
+            <p>Oh! And if you're following along, try going to cs.chromium.org,
+               then opt into the new layout, and click on <code>chromium/src</code>.
+               You'll see a sidebar with the same chromium code layout that we just looked at in a terminal
+               Chromium's size makes it difficult to search inside an IDE,
+               so cs.chromium is your friend.</p>
+            <ul>
+              <li>The first module you should know about is <code>base</code>.
+                  These are general purpose tools that anyone else can use.
+                  this is where you'll find your string tokenizers,
+                  command-line parsers, logging utils, C++ polyfills, and so on.</li>
+
+              If you want to get familiar with the C++ code, this is the single best starting point.
+              It's well-written,
+              it's all self-contained,
+              and Electron uses it everywhere.
+
+              <li>gin: which is convenience utilities for the javascript engine named v8. 
+                  This module is more complex, but might be another good starter candidate
+                  if you're wanting to learn more about V8:
+              <ul>
+                <li> it's only a few thousand lines</li>
+                <li> Electron uses it everywhere</li>
+              </ul>
+              </li>
+
+              <li>blink is chrome's famous rendering and layout engine.
+                  And it does a lot of heavy lifting for us.
+                  But usually when Electron refers to blink,
+                  it's because we need to include the declaration of a blink structure or a blink enumeration.
+                  So while understanding Blink is useful, this is not where you'll spend most of your time.</li>
+
+              <li>gfx: here are the fonts, color palettes, and rounded rectangles.
+                  This builds on top of the 2D graphics library Skia, which I think is also used by Firefox.</li>
+
+              <li>views (and aura): framework for native UI resources
+                  like windows, widgets, textfields, menus.
+                  One of Electron's biggest advantages is that it gives you access to native features,
+                  so we have a lot of code that builds on top of views.</li>
+
+              <li>next in the chromium stack is content and this is the most important one here.
+                  It describes itself as "the core needed for a multi-process sandboxed renderer."
+                  Which to me means it's a minimum viable code for a browser and browser only --
+                  no extra features like spellcheck, printing, and so on --
+                  and someone like Chromium can come along and build a full web browser around it,
+                  or someone like Electron can come along and build Electron around it.
+                  Content has a public API, and also a reference implementation
+                  named "content shell" which renders pages on all platforms.
+                  If you're embedding Chromium in an application, content is where you'd start --
+                  so let's come back to this module in the next slide.</li>
+
+              <li>components: this is where you'll find most of those 
+                  bells and whistles that you won't find in content --
+                  they're important, but not intrinsic to content itself.
+                  Here's where you'll find printing, translation detection,
+                  autofill, bookmarks, you name it.</p>
+
+              <li>finishing the list is services: services reside in their own processes and communicate only via IPC.
+                  There's no link-time or run-time exposure, no sharing of global state.
+                  Obviously, this has security benefits.
+                  It also has pragmatic benefits.
+                  For example, audio is a service. If your platform's audio just crashes,
+                  Chromium can stop and restart the audio process instead of the entire browser process.</li>
+          </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="in-practice">
-          #### Part 3 of 3
-          ## In Practice
-
-          XXX
-          To review: So far we've checked out 16 GB of source code
-
-          and we've run 18 thousand and 98 build steps
-
-          and we know what `win.openDevTools()` does
-
-          So we're invincible, right?
-
-          Let's get our hands dirty.
-
-          As promised, here's a real bug that was reported about a month ago:
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" id="bug-report" data-background="assets/bug-report.png">
-          XXX
-          The screenshot here says it all: on Linux, the `alert()` dialog is showing a No Symbol icon.
-
-          This should be easy to test.
-        </section>
-
-        <section data-markdown data-separator-notes="XXX" data-background-video="assets/bugfix.webm" data-background-color="#000000">
-          XXX
-          make sure we have a fresh build
-
-          let's run electron-quick-start
-
-          open devtools
-
-          and pull up an alert dialog.
-
-          sure enough.
-
-          Now, I'm pretending for this example I don't know whether Electron is using a GtkMessageDialog, a GtkDialog, or not using those at all but instead creating a custom GtkWindow.
-
-          But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's what every GTK+ widget uses, no matter what type of class is aggregating it.
-
-          So I'll run the same test again inside a debugger and set gtk_widget_show() as a breakpoint.
-
-          open devtools again...
-
-          set the breakpoint... gdb is kind of slow.
-
-          the alert again...
-
-          cool. let's see where it's coming from.
-
-          ok this noise here is C++'s version of the green terminal windows in the matrix. You get used to it.
-
-          first thing I see here is it's in atom/browser/ui/message_box_gtk, which means it's likely our bug.
-
-          I see an argument named 'icon' of type imageskia, so maybe someone is passing in a broken icon.
-
-          let's open up atom/browser/ui/message_box_gtk line 49 and take a look.
-
-          here's where the dialog is created, and sometimes these use a default icon depending on the dialog type.
-
-          let's go back to the debugger and see what type was passed in.
-
-          looks like that type is atom::MESSAGE_BOX_TYPE_NONE, so that's not the problem.
-
-          Next I see us setting the dialog's image property if that imageskia isn't null.
-
-          let's go back to the debugger and check.
-
-          walk up the callstack
-
-          and icon.isNull() is _true_, so this block of code is never reached, so this isn't the problem either.
-
-          what else calls gtk_widget_show().
-
-          here's a call that only happens when we have a checkbox label... that's not going to be it, but just for fun let's ask the debugger what checkbox_label is --
-
-          yep, checkbox_label is an empty string.
-
-          so let's keep looking for gtk_widget_show() calls.
-
-          AH now this is promising.
-
-          gtk_widget_show_all() tries to show its whole subtree of widgets, of UI components. 
-
-          So maybe what's happening is GtkMessageDialog _always_ has an icon widget, but it's just not shown when the icon property's not set.
-
-          If so, this call here would show that unset icon.
-
-          That would be consistent with the no-icon symbol.
-
-          Let's see what happens if we remove the `_all()` from this.
-
-          rebuild
-
-          restart the process
-
-          pop up devools
-
-          show an alert
-
-          there we go!
-
-          We got it.
-
-          And although I knew some GTK+ to solve this bug, this one didn't really take any Electron.
-
-          (fast transition to)
-        </section>
-
-        <section id="conclusions">
-          <h3>What Have We Learned?</h3>
-          <ul>
-          <li class="fragment">Whether you know Electron, GTK+, Chromium, Node.js, Windows, JS, C++, Obj-C, Carbon, Linux, or Docker... those are <i>all</i> skills that you can use on Electron.</li>
-          <li class="fragment">Bootstrapping Electron is expensive, but updates are cheap.</li>
-          <li class="fragment">Electron is big, but may feel familiar if you've written Electron apps.</li>
-          <li class="fragment">It's OK to be a little lost.</li>
-          <li class="fragment">There exists a sindresorhus repo with 1000 dependencies</li>
-          </ul>
+        <section id="content-module">
+          &nbsp;
           <aside class="notes">
-          <p><b>(read fragment 1)</b> ...also, if you know some of these and want to improve on others, Electron is a good playground for doing that.</p>
-          <p><b>(read fragment 2)</b>So write two PRs instead of just one.</p>
-          <p><b>(read fragment 3)</b></p>
-          <p><b>(read fragment 4)</b>It's OK to be a little lost. Don't stress about it. **You** can do a lot of good even while you're still learning.</p>
-          <p>and lastly... we learned <b>(read fragment 5)</b> this is out there.</p>
+            <p>OK those are Chromium's main modules, at least as seen by Electron.</p>
+            <p>Let's finish our Chromium overview by going back into the content module.</p>
+            <p>Even just looking at the foldernames at the top of Content,
+               there are a few important patterns here that will repeat in the rest of Chromium and Electron.
+               These are why I said Electron's code will make more sense after we look at this,</p>
+            <p>so I first want to point out these two names, <code>renderer/</code> and </code>browser/</code>.</p>
+            <p>The Renderer process renders content.
+               In Chromium, a new renderer process is created for each website opened in a new tab --
+               so an app can have any number of these processes.</p>
+            <p>The browser process, which we sometimes also call the main process,
+               is responsible for pretty much everything else, like managing the native user interface as well as disk and network IO.
+               There is always exactly one browser process in a content app.</p>.
+            <p>And, since Electron is deeply based on this model,
+               it has the exact same division of labor between one browser and some number of renderers.
+               That's why even Electron's "hello world" app, electron-quick-start, has main.js and renderer.js files.</p>
+            <p>Some of the folders here also have patterns that repeat:</p>
+            <ul>
+              <li><code>utility/</code> is for tasks that can be performed in a utility thread</li>
+              <li><code>app/</code> is for the scaffolding where you take all this embeddable stuff
+                  and turn it into an actual executable that you can start up and run</li>
+              <li><code>common/</code> is for code that's shared between the other folders at this level.</li>
+            </ul>
+            <p>And if we look in the <code>public/</code> directory,
+               This is the public API that's intended for clients like Chromium and Electron to subclass from.
+               And in here you see the exact same patterns for how the code is laid out.</p>
+            <p>And real quickly I want to point out the <code>shell/</code> directory.
+               Again, you see the same patterns.
+               As mentioned before, this is kind of a reference implementation of a Content client.
+               So sometimes when you're trying to understand a concept in Electron,
+               this is good reference to look at.</p>
+            <p>OK. Electron's code is all the same patterns so looking at it is going to go quickly.
+               but I know that was a lot to take in just now, so before we start,
+               as a pallete cleanser,
+               so here's a picture of a derpy cat.</p>
+          </aside>
         </section>
 
-        <section data-markdown data-separator-notes="XXX" id="thanks">
-          ### Thanks for listening!
-
-          #### Further reading
-          * https://electronjs.org/docs/development
-
-          * https://cs.chromium.org/
-
-          * https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code
-
-          * https://www.patreon.com/sindresorhus
+        <section id="palette-cleanser">
+          <img src="assets/derpy-cat.jpg"/>
+          <aside class="notes">
+            <p>All good? OK, onward!</p> 
+          </aside>
         </section>
 
+        <section id="electron-module">
+          <aside class="notes">
+            <p>Electron has two main folders for its code, <code>lib/</code> and <code>shell</code>.
+               Like `content shell`, <code>electron shell/</code> is our subclasses of content's public API.
+               Basically, this code is an answer to the question "what would a Content application
+               look like it was also made up of node modules and gave you full access to your desktop?"</p>
+            <p>And we have <code>lib/</code> which is the javascript layer between electron shell
+              and your applications.
+              This is where the code lives for all the Electron APIs that your applications import.
+              If we can do it in Javascript, it's here. Otherwise, we do it back in electron shell.</p>
+            <p><b>navigate through shell and lib directories</b></p>
+            <p>And so when we poke around in <code>shell</code> and <code>lib</code>,
+               we see the same patterns at play again. Division of labor between
+               browser and renderer, a place for shared common code, and so on.</p>
+            <p>And since the renderer process renders
+               and the browser process handles most of the other things like native ui,
+               it'll come as no surprise that the native UI code is in electron/shell/browser/.</p>
+          </aside>
+        </section>
+
+        <section id="finding-reference-points">
+          <p>So if you get a crash in<br/><span class="filename">electron/shell/browser/atom_browser_client</span>:</p>
+          <p>
+            <ul>
+              <li>You know a reference impl is at<br/><span class="filename">content/shell/browser/shell_content_browser_client.cc</span></li>
+              <li>You know the parent class is at<br/><span class="filename">content/public/browser/content_browser_client.h</span></li>
+            </ul>
+          </p>
+
+          <aside class="notes">
+            <p>So, putting this together, say you get a crash and your debugger says it's
+               in electron/shell/browser/atom_browser_client. And you think to yourself,
+               "well I know all those words, but I have no idea what that means."</p>
+            <p>from the directory and the filename,
+               you already know this is building on top of content.
+               so you know where to look for a reference implementation.</p>
+            <p>You also know where the parent class is,
+               which is usually well-commented.</p>
+          </aside>
+        </section>
+
+        <section id="finding-the-answer">
+          <p>And when you open up<br/><span class="filename">content/public/browser/content_browser_client.h</span>...</p>
+          <p><pre><code>// Embedder API (or SPI) for participating in browser
+// logic, to be implemented by the client of the content browser.
+// See ChromeContentBrowserClient for the principal impl.
+// The methods are assumed to be called on the UI thread unless
+// otherwise specified. Use this "escape hatch" sparingly,
+// to avoid the embedder interface ballooning and becoming
+// very specific to Chrome.
+class CONTENT_EXPORT ContentBrowserClient {</code></pre></p>
+          <p><pre><code>// Allow the embedder to control if an AppCache can be used
+// for the given url. This is called on the UI thread.
+virtual bool AllowAppCache(const GURL& manifest_url,
+                           const GURL& first_party,
+                           BrowserContext* context);</code></pre></p>
+          <aside class="notes">
+            And when you look at the parent class, you learn that BrowserClient is a catch-all
+            escape hatch for embedders to fine-tune parts of the browser.
+            For example, it lets embedders decide when the app cache can be used.
+          </aside>
+        </section>
+
+        <section id="the-biggest-class">
+          <aside class="notes">
+            <p>One final thing about the code.
+               I've mentioned a few times how large the codebase is,
+               and that scares some people off.
+               So I wanted to show you this:</p>
+            <p><b>live code <code>find ./ -name "*.cc" | xargs du -s | sort -n</code></b></p>
+            <p>Like I said, you're going to find weird code that you don't understand,
+              and that's OK because nobody understands all of it and you're in good company.</p>
+            <p><em>but</em></p>
+            <p>Here we've got the largest source file in electron, atom_api_web_contents.
+               And if we open up its class definition,
+               we see it's full of things like <code>OpenDevTools()</code> and
+               and <code>IsDevToolsOpened()</code>.</p>
+            <p>Even though Electron takes time to learn,
+               a lot of its code maps directly to concepts that you
+               already know if you've ever written an Electron application.</p>
+          </aside>
+        </section>
+
+        <section id="part-3-taking-action">
+          <h2>Coding Example</h2>
+          <aside class="notes">
+            <p>I joined Electron because I wanted to learn more web tech.
+               Before joining, I'd done a lot of code on Linux services
+               and Linux desktop apps.
+               but I guarantee this room understands writing web apps
+               better than I did then.</p>
+            <p>But like I said,
+               you can do good things on Electron even with only one
+               of the skills from that list I gave earlier.</p>
+            <p>So with my last five minutes I'm going to show a quick demo of that.
+               This is a bug that I fixed early on in Electron,
+               and really the only skill I needed to fix it was knowledge
+               of a Linux GUI library named GTK.</p>
+            <p>And don't worry, you don't need to know GTK to watch this.</p>
+            <p>So, the bug report was that on Linux, the `alert()` dialog
+               was showing the No Symbol icon.</p>
+            <p>Happily, that's super easy to test.</p>
+            <p>
+            <p><code>
+                <ul>
+                  <li>cd ~/covalence/electron-quick-start</li>
+                  <li>e show current</li>
+                  <li>e start</li>
+                </ul>
+              </code>
+            </p>
+            <p>Now, I'm pretending for this example I don't know where this code is or how it works -- though if I'd watched this talk, I'd know that the native UI code is in electron/shell/browser.</p>
+            <p>But I do know whatever it's using, that icon is getting shown by a call to gtk_widget_show(), because that's how every GTK+ widget is shown.</p>
+            <p>So I'll run the same test again inside a debugger and set gtk_widget_show() as a breakpoint.</p>
+            <p><code>
+                <ul>
+                  <li>cd ~/covalence/electron-quick-start</li>
+                  <li>e show current</li>
+                  <li>e debug</li>
+                  <li>r .</li>
+                  <li><b>(open up devtools; queue up the alert dialog)</b></li>
+                  <li>break gtk_widget_show</li>
+                </ul>
+              </code>
+            </p>
+            <p>here's where the dialog is created, and sometimes these use a default icon depending on the dialog type.</p>
+            <p>let's go back to the debugger and see what type was passed in.</p>
+            <p>looks like that type is atom::MESSAGE_BOX_TYPE_NONE, so that's not the problem.</p>
+            <p>Next I see us setting the dialog's image property if a image that's not null is passed in.</p>
+            <p>let's go back to the debugger and check.</p>
+            <p>walk up the callstack</p>
+            <p>icon is a null pointer, so this block of code is never reached, so this isn't the problem either.</p>
+            <p>what else calls gtk_widget_show().</p>
+            <p>here's a call that only happens when we have a checkbox label... that's not going to be it, but it's very cheap to confirm, we just need to look at the checkbox_label in settings --</p>
+            <p>yep, checkbox_label is an empty string.</p>
+            <p>so let's keep looking for gtk_widget_show() calls.</p>
+            <p>AH now this is promising.</p>
+            <p>gtk_widget_show_all() tries to show its whole subtree of widgets, of UI components. </p>
+            <p>So maybe what's happening is GtkMessageDialog <i>always</i> has an icon widget, but it's just not shown when the icon property's not set.</p>
+            <p>If so, this call here would show that unset icon.</p>
+            <p>That would be consistent with the no-icon symbol.</p>
+            <p>Let's see what happens if we remove the `_all()` from this.</p>
+          </aside>
+        </section>
+
+        <section id="thanks">
+          <h3>Thanks for listening!</h3>
+          <h4>Further reading</h4>
+          <p>
+            <ul>
+              <li><span class="url">https://github.com/electron/build-tools</span></li>
+              <li><span class="url">https://electronjs.org/docs/development</span></li>
+              <li><span class="url">https://cs.chromium.org/</span></li>
+              <li><span class="url">https://www.chromium.org/developers/how-tos/getting-around-the-chrome-source-code</span></li>
+            </ul>
+          </p>
+        </section>
       </div>
-
     </div>
 
     <script src="lib/js/head.min.js"></script>
@@ -697,7 +599,7 @@
 
       // More info https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
-        controls: true,
+        controls: false,
         progress: true,
         history: true,
         center: true,
@@ -706,6 +608,8 @@
 
         // More info https://github.com/hakimel/reveal.js#dependencies
         dependencies: [
+          { src: 'socket.io/socket.io.js', async: true },
+          { src: 'plugin/notes-server/client.js', async: true },
           { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
           { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
           { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
